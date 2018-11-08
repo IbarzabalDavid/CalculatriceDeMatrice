@@ -9,45 +9,61 @@ import java.util.ArrayList;
 
 public class Controller {
     @FXML
+    private Button but;
+    @FXML
+    private Spinner spinnerL;
+    @FXML
+    private Spinner spinnerC;
+    @FXML
+    private VBox vbScene;
+    @FXML
+    private Label textL;
+    @FXML
+    private Label textC;
+    @FXML
+    private HBox hb1;
+    @FXML
+    private HBox hb2;
+    @FXML
+    private HBox hbRep;
+    @FXML
+    private Button ok;
+    @FXML
+    private Label nombre;
+    @FXML
+    private Button ok1;
+    public static Matrice matrice = new Matrice();
+    @FXML
+    private VBox vbTemp;
+    @FXML
+    private TextField text;
+    @FXML
     public void nouvelleMatrice(){
-        Spinner spinnerL = new Spinner(1,4,3);
-        Spinner spinnerC = new Spinner(1,4,3);
-        Label textL = new Label("Nombre de lignes de votre matrice :     ");
-        Label textC = new Label("Nombre de colonnes de votre matrice :");
-        HBox hb1 = new HBox(textL,spinnerL);
-        hb1.setSpacing(5);
-        HBox hb2 = new HBox(textC,spinnerC);
-        hb2.setSpacing(5);
-        VBox vb1 = new VBox(hb1,hb2);
-        vb1.setSpacing(5);
+        but.setVisible(false);
+        SpinnerValueFactory<Integer> valeurs = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,3);
+        SpinnerValueFactory<Integer> valeurs1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,3);
+        spinnerL.setValueFactory(valeurs);
+        spinnerC.setValueFactory(valeurs1);
+        vbScene.setVisible(true);
 
-
-        Dialog dialog = new Dialog();
-        dialog.getDialogPane().getButtonTypes().add(new ButtonType("OK", ButtonBar.ButtonData.OK_DONE));
-        dialog.getDialogPane().setContent(vb1);
-        Matrice matrice = new Matrice();
-        dialog.showAndWait();
-
-        matrice.setTailleL((int)spinnerL.getValue());
-        matrice.setTailleC((int)spinnerC.getValue());
-
-        Label chiffre = new Label("Entrez un nombre: ");
-        TextField text = new TextField();
-        HBox hb = new HBox(chiffre,text);
-
-
-        Dialog dialog1 = new Dialog();
-        dialog1.getDialogPane().getButtonTypes().add(new ButtonType("OK",ButtonBar.ButtonData.OK_DONE));
-        dialog1.getDialogPane().setContent(hb);
-
+    }
+    @FXML
+    public void valeurMat(){
+        hb1.setVisible(false);
+        hb2.setVisible(false);
+        ok.setVisible(false);
+        hbRep.setVisible(true);
         int var = matrice.getTailleL()*matrice.getTailleC();
-        ArrayList<Element> element = new ArrayList<>();
-       Label [] tabLab = new Label[var];
+        Label [] tabLab = new Label[var];
+        nombre.setText("Entrez un nombre ("+0+")");
         for (int i=0;i<var;i++){
             Label label = new Label("["+i+"]");
             tabLab[i]=label;
         }
-        VBox vbox = new VBox();
+
+        ArrayList<Element> element = new ArrayList<>();
+
+
         int constante=0;
         boolean ok=false;
         while (!ok){
@@ -58,11 +74,11 @@ public class Controller {
                     hbLab.getChildren().addAll(tabLab[constante]);
                     constante++;
                 }
-                vbox.setSpacing(7);
-                vbox.getChildren().addAll(hbLab);
+                vbTemp.setSpacing(7);
+                vbTemp.getChildren().addAll(hbLab);
                 if (i==matrice.getTailleL()-1){
-                    vbox.getChildren().addAll(hb);
-                    dialog1.getDialogPane().setContent(vbox);
+                    vbTemp.getChildren().addAll(hbRep);
+
                 }
             }
             if (constante==var){
@@ -73,14 +89,18 @@ public class Controller {
             }
         }
         for (int i=0;i<var;i++){
-            text.setText("");
-            chiffre.setText("Entrez un nombre ("+i+")");
-            dialog1.showAndWait();
             Element elementTemp = new Element();
             elementTemp.setValeur(Integer.parseInt(text.getText()));
             tabLab[i].setText(text.getText());
             element.add(elementTemp);
         }
         matrice.setElement(element);
+        matrice.setTailleL((int)spinnerL.getValue());
+        matrice.setTailleC((int)spinnerC.getValue());
+    }
+    @FXML
+    public void addElement(){
+
+
     }
 }
