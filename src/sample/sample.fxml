@@ -52,15 +52,15 @@
                </children>
             </HBox>
             <Button fx:id="ok" mnemonicParsing="false" onAction="#valeurMat" text="ok" />
-            <VBox fx:id="vbTemp" prefHeight="200.0" prefWidth="100.0">
+            <VBox fx:id="vbTemp" prefHeight="200.0" prefWidth="100.0" visible="false">
                <children>
-                  <HBox fx:id="hbRep" prefHeight="100.0" prefWidth="200.0" visible="false">
+                  <HBox fx:id="hbRep" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label fx:id="nombre" />
-                        <TextField fx:id="text" />
-                        <Button fx:id="ok1" mnemonicParsing="false" onAction="#addElement" text="ok" />
+                        <TextField fx:id="text" promptText="entrez un nombre" />
                      </children>
                   </HBox>
+                  <Button fx:id="ok1" mnemonicParsing="false" onAction="#addElement" text="ok" />
                </children>
             </VBox>
          </children>
