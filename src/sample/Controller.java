@@ -5,6 +5,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
+
 public class Controller {
     @FXML
     public void nouvelleMatrice(){
@@ -39,23 +41,24 @@ public class Controller {
         dialog1.getDialogPane().setContent(hb);
 
         int var = matrice.getTailleL()*matrice.getTailleC();
-        Element[] element = new Element[var];
-       /* Label [] tabLab = new Label[var];
+        ArrayList<Element> element = new ArrayList<>();
+       Label [] tabLab = new Label[var];
         for (int i=0;i<var;i++){
             Label label = new Label("["+i+"]");
             tabLab[i]=label;
         }
-
+        VBox vbox = new VBox();
         int constante=0;
         boolean ok=false;
         while (!ok){
             for (int i=0;i<matrice.getTailleL();i++){
                 HBox hbLab = new HBox();
+                hbLab.setSpacing(7);
                 for (int j = 0; j<matrice.getTailleC();j++){
                     hbLab.getChildren().addAll(tabLab[constante]);
                     constante++;
                 }
-                VBox vbox = new VBox();
+                vbox.setSpacing(7);
                 vbox.getChildren().addAll(hbLab);
                 if (i==matrice.getTailleL()-1){
                     vbox.getChildren().addAll(hb);
@@ -68,17 +71,16 @@ public class Controller {
 
 
             }
-        }*/
-
+        }
         for (int i=0;i<var;i++){
             text.setText("");
             chiffre.setText("Entrez un nombre ("+i+")");
             dialog1.showAndWait();
             Element elementTemp = new Element();
             elementTemp.setValeur(Integer.parseInt(text.getText()));
-            //tabLab[i].setText(text.getText());
-            element[i]=elementTemp;
+            tabLab[i].setText(text.getText());
+            element.add(elementTemp);
         }
-
+        matrice.setElement(element);
     }
 }

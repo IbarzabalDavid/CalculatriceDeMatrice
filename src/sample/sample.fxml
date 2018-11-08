@@ -23,9 +23,9 @@
                 <MenuItem mnemonicParsing="false" text="Action 1" />
               </items>
             </Menu>
-            <Menu mnemonicParsing="false" onAction="#nouvelleMatrice" text="Format">
+            <Menu mnemonicParsing="false" text="Format">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" onAction="#nouvelleMatrice" text="Créer une matrice" />
               </items>
             </Menu>
         </menus>
