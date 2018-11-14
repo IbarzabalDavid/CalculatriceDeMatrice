@@ -6,6 +6,7 @@ public class Matrice {
     int tailleL;
     int tailleC;
     double det;
+    char nomMat;
     ArrayList<Element> element = new ArrayList<>();
 
     public int getTailleL() { return tailleL; }
