@@ -13,15 +13,14 @@ public class Controller {
     private Button but;
     public static Matrice matrice = new Matrice();
     public static ArrayList<Element> element = new ArrayList<>();
-    public static Spinner spinnerL= new Spinner(1,4,3);
-    public static Spinner spinnerC= new Spinner(1,4,3);
+    public static Spinner spinnerL= new Spinner(1,5,3);
+    public static Spinner spinnerC= new Spinner(1,5,3);
     public static Label labelL = new Label("Entrez le nombre de lignes de votre matrice     ");
     public static Label labelC = new Label("Entrez le nombre de colonnes de votre matrice");
+    public static ArrayList<Matrice> tabMat=new ArrayList<>();
     @FXML
     public void nouvelleMatrice(){
-        ButtonType buttonDialog1 = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
-        AtomicInteger varTemp=new AtomicInteger();
-        varTemp.set(0);
+        //dialog1 nb ligne et colones
         HBox hb = new HBox(labelL,spinnerL);
         hb.setSpacing(7);
         HBox hb1 = new HBox(labelC,spinnerC);
@@ -32,10 +31,14 @@ public class Controller {
         dialog.getDialogPane().setContent(vb);
         dialog.getDialogPane().getButtonTypes().add( new ButtonType("OK",ButtonBar.ButtonData.OK_DONE));
         dialog.showAndWait();
-
         matrice.setTailleL((int)spinnerL.getValue());
         matrice.setTailleC((int)spinnerC.getValue());
+        //fin dialog1
+        ButtonType buttonDialog1 = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
+        AtomicInteger varTemp=new AtomicInteger();
+        varTemp.set(0);
         int var = matrice.getTailleL()*matrice.getTailleC();
+        //dialog2 matrice button
         Button[] tabBut = new Button[var];
         for (int i=0;i<var;i++){
             tabBut[i]=new Button();
@@ -58,11 +61,14 @@ public class Controller {
         Dialog dialog1 = new Dialog();
         dialog1.getDialogPane().setContent(vbTemp);
         dialog1.show();
-
+        //fin dialog2
+        //dialoge3 entrez valur case
         Label question = new Label("Entrez la valeur ");
-        TextField tf = new TextField("1");
+        TextField tf = new TextField();
         HBox labTf = new HBox(question,tf);
         labTf.setSpacing(7);
+        //Disable i dont like
+        /*
         int l=0;
         for (int i=0;i<var;i++){
             tabBut[i].setDisable(true);
@@ -70,7 +76,7 @@ public class Controller {
                 tabBut[i].setDisable(false);
                 l++;
             }
-        }
+        }*/
         for (int i=0;i<var;i++){
             final int temp=i;
             tabBut[i].setOnAction((event)->{
@@ -97,8 +103,33 @@ public class Controller {
     }
     @FXML
     public void supprimerMatrice(){
-        for (int j=0; j<element.size();j++){
-            System.out.println(matrice.getElement().get(j).getValeur());
+        if (tabMat.size()==0){
+            Label label = new Label("Vous n'avez pas de matrice");
+            Dialog dialog = new Dialog();
+            dialog.getDialogPane().setContent(label);
+            dialog.getDialogPane().getButtonTypes().add(new ButtonType("OK", ButtonBar.ButtonData.OK_DONE));
+            dialog.showAndWait();
+        }
+        else if (tabMat.size()==1){
+            tabMat.get(0).getElement().remove(0);
+        }
+        else {
+            int chiffre=65;
+            Dialog dialog1 = new Dialog();
+            CheckBox[] tabCheck = new CheckBox[tabMat.size()];
+            Label label1 = new Label("Quelle matrice voulez-vous supprimer?");
+            dialog1.getDialogPane().setContent(label1);
+            for (int i=0;i<tabMat.size();i++){
+                CheckBox cb = new CheckBox("Matrice: "+ (char)chiffre);
+                tabCheck[i]=cb;
+                chiffre++;
+            }
+            VBox vb = new VBox();
+            for (int i=0;i<tabCheck.length;i++){
+                vb.getChildren().add(tabCheck[i]);
+            }
+            dialog1.getDialogPane().setContent(vb);
+            dialog1.showAndWait();
         }
     }
 }
