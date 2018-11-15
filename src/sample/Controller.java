@@ -1,5 +1,9 @@
 package sample;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -9,14 +13,21 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Controller {
-    @FXML
-    private Button but;
     public static Matrice matrice = new Matrice();
     public static ArrayList<Element> element = new ArrayList<>();
     public static Spinner spinnerL= new Spinner(1,4,3);
     public static Spinner spinnerC= new Spinner(1,4,3);
     public static Label labelL = new Label("Entrez le nombre de lignes de votre matrice     ");
     public static Label labelC = new Label("Entrez le nombre de colonnes de votre matrice");
+    public static ArrayList<Matrice> tabMat = new ArrayList<>();
+    public static ArrayList<CheckBox> tabCheck = new ArrayList<>();
+    public static Button but = new Button("OK");
+    //https://stackoverflow.com/questions/30543460/multiple-but-limited-checkboxes-in-fxml-javafx
+    public static ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
+    public static ObservableSet<CheckBox> unselectedCheckBoxes = FXCollections.observableSet();
+    public static int maxNumSelected =  2;
+    public static IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
+    public static Dialog dialogCheckBox = new Dialog();
     @FXML
     public void nouvelleMatrice(){
         ButtonType buttonDialog1 = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
@@ -81,7 +92,6 @@ public class Controller {
                dialog2.showAndWait();
                elem.setValeur(Integer.parseInt(tf.getText()));
                element.add(elem);
-               matrice.setElement(element);
                tabBut[temp].setText(tf.getText());
                tf.setText("1");
                varTemp.set(varTemp.get()+1);
@@ -91,14 +101,110 @@ public class Controller {
                   dialog1.setHeight(500);
 
                }
+               if (element.size()==var){
+                   matrice.setElement(element);
+                   tabMat.add(matrice);
+                   int nombre = element.size();
+                   for (int j =0;j<nombre;j++){
+                       element.clear();
+                   }
+               }
             });
         }
 
     }
     @FXML
     public void supprimerMatrice(){
-        for (int j=0; j<element.size();j++){
-            System.out.println(matrice.getElement().get(j).getValeur());
+        if (tabMat.size()==0){
+            Label label = new Label("Vous n'avez pas de matrice");
+            Dialog dialog = new Dialog();
+            dialog.getDialogPane().setContent(label);
+            dialog.getDialogPane().getButtonTypes().add(new ButtonType("OK", ButtonBar.ButtonData.OK_DONE));
+            dialog.showAndWait();
         }
+        else if (tabMat.size()==1){
+            tabMat.get(0).getElement().remove(0);
+        }
+        else {
+            int chiffre=65;
+            Dialog dialog1 = new Dialog();
+            CheckBox[] tabCheck = new CheckBox[tabMat.size()];
+            Label label1 = new Label("Quelle matrice voulez-vous supprimer?");
+            dialog1.getDialogPane().setContent(label1);
+            for (int i=0;i<tabMat.size();i++){
+                CheckBox cb = new CheckBox("Matrice: "+ (char)chiffre);
+                tabCheck[i]=cb;
+                chiffre++;
+            }
+            VBox vb = new VBox();
+            for (int i=0;i<tabCheck.length;i++){
+                vb.getChildren().add(tabCheck[i]);
+            }
+            dialog1.getDialogPane().getButtonTypes().add(new ButtonType("OK", ButtonBar.ButtonData.OK_DONE));
+            dialog1.getDialogPane().setContent(vb);
+            dialog1.showAndWait();
+        }
+    }
+    @FXML
+    public void addition(){
+        int chiffre=65;
+        Label label1 = new Label("Quelle matrice voulez-vous additionner?");
+        dialogCheckBox.getDialogPane().setContent(label1);
+        for (int i=0;i<tabMat.size();i++){
+            CheckBox checkB = new CheckBox("Matrice: "+ (char)chiffre);
+            tabCheck.add(checkB);
+            chiffre++;
+        }
+        VBox vb = new VBox();
+        for (int i=0;i<tabCheck.size();i++){
+            vb.getChildren().add(tabCheck.get(i));
+        }
+        vb.setSpacing(7);
+        dialogCheckBox.getDialogPane().setContent(vb);
+        dialogCheckBox.getDialogPane().getButtonTypes().add(new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE));
+        dialogCheckBox.showAndWait();
+
+    }
+    //https://stackoverflow.com/questions/30543460/multiple-but-limited-checkboxes-in-fxml-javafx
+    public void initialize() {
+        for (int i=0;i<tabCheck.size();i++){
+            configureCheckBox(tabCheck.get(i));
+            dialogCheckBox.getDialogPane().setContent(tabCheck.get(i));
+        }
+
+        but.setDisable(true);
+
+        numCheckBoxesSelected.addListener((obs, oldSelectedCount, newSelectedCount) -> {
+            if (newSelectedCount.intValue() >= maxNumSelected) {
+                unselectedCheckBoxes.forEach(cb -> cb.setDisable(true));
+                but.setDisable(false);
+            } else {
+                unselectedCheckBoxes.forEach(cb -> cb.setDisable(false));
+                but.setDisable(true);
+            }
+        });
+
+
+    }
+    //https://stackoverflow.com/questions/30543460/multiple-but-limited-checkboxes-in-fxml-javafx
+    private void configureCheckBox(CheckBox checkBox) {
+
+        if (checkBox.isSelected()) {
+            selectedCheckBoxes.add(checkBox);
+        } else {
+            unselectedCheckBoxes.add(checkBox);
+        }
+
+        checkBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            if (isNowSelected) {
+                unselectedCheckBoxes.remove(checkBox);
+                selectedCheckBoxes.add(checkBox);
+            } else {
+                selectedCheckBoxes.remove(checkBox);
+                unselectedCheckBoxes.add(checkBox);
+            }
+
+        });
+
     }
 }

@@ -11,19 +11,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception{
-        // Modèle
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         stage.setTitle("Matrice");
         stage.setMaximized(true);
         stage.setResizable(false);
-
-
-        //Vue
         stage.setScene(new Scene(root));
         stage.show();
-
-
-        //Controlleur
     }
 
 

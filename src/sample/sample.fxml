@@ -6,7 +6,6 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -44,10 +43,28 @@
                   </BorderPane>
                </content>
           </Tab>
-          <Tab text="Untitled Tab 2">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
+          <Tab text="Opérations">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="7.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#addition" prefWidth="211.0" text="Addition" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefWidth="211.0" text="Soustraction" />
+                              <Button layoutX="10.0" layoutY="41.0" mnemonicParsing="false" text="Multiplication par un scalaire" />
+                              <Button layoutX="10.0" layoutY="72.0" mnemonicParsing="false" prefWidth="211.0" text="Puissance" />
+                              <Button layoutX="10.0" layoutY="103.0" mnemonicParsing="false" prefWidth="211.0" text="Transposition" />
+                              <Button layoutX="10.0" layoutY="134.0" mnemonicParsing="false" prefWidth="211.0" text="Inversion" />
+                              <Button layoutX="10.0" layoutY="165.0" mnemonicParsing="false" prefWidth="211.0" text="Produit matriciel" />
+                              <Button layoutX="10.0" layoutY="196.0" mnemonicParsing="false" prefWidth="211.0" text="Produit vectoriel" />
+                              <Button layoutX="10.0" layoutY="227.0" mnemonicParsing="false" prefWidth="211.0" text="Produit d'Hadamard" />
+                              <Button layoutX="10.0" layoutY="258.0" mnemonicParsing="false" prefWidth="211.0" text="Produit tensoriel" />
+                              <Button layoutX="10.0" layoutY="289.0" mnemonicParsing="false" prefWidth="211.0" text="Calcul du déterminant" />
+                           </children>
+                        </VBox>
+                     </center>
+                  </BorderPane>
+               </content>
           </Tab>
         </tabs>
       </TabPane>
