@@ -37,7 +37,7 @@
                         <VBox prefHeight="329.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
                               <Button fx:id="but" mnemonicParsing="false" onAction="#nouvelleMatrice" prefHeight="25.0" prefWidth="200.0" text="Créer une matrice" />
-                              <Button fx:id="butSup" mnemonicParsing="false" prefWidth="200.0" text="Supprimer matrice" />
+                              <Button fx:id="butSup" mnemonicParsing="false" onAction="#supprimerMatrice" prefWidth="200.0" text="Supprimer matrice" />
                            </children>
                         </VBox>
                      </left>
