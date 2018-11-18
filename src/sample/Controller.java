@@ -11,16 +11,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Controller {
     @FXML
-    public static Spinner spinnerL= new Spinner(1,5,3);
-    public static Spinner spinnerC= new Spinner(1,5,3);
-    public static Label labelL = new Label("Entrez le nombre de lignes de votre matrice     ");
-    public static Label labelC = new Label("Entrez le nombre de colonnes de votre matrice");
     public static ArrayList<Matrice> tabMat=new ArrayList<>();
     @FXML
     public void nouvelleMatrice(){
+ //on devrais pt ajouter un bouton annuler
         Matrice matrice=new Matrice();
         matrice.setNomMat((char)(tabMat.size()+65));
         //dialog0
+        Spinner spinnerL= new Spinner(1,5,3);
+        Spinner spinnerC= new Spinner(1,5,3);
+        Label labelL = new Label("Entrez le nombre de lignes de votre matrice     ");
+        Label labelC = new Label("Entrez le nombre de colonnes de votre matrice");
         HBox hb = new HBox(labelL,spinnerL);
         hb.setSpacing(7);
         HBox hb1 = new HBox(labelC,spinnerC);
@@ -133,7 +134,7 @@ public class Controller {
                     tabMat.remove(i);
                     renameMat();
                     afficherMat();
-                    //Rentrer un dialog operation reussi montrer la matrice qui a ete supprimer && avertir que les nom des matrice on pt changer
+//Rentrer un dialog operation reussi montrer la matrice qui a ete supprimer && avertir que les nom des matrice on pt changer
                 }
             }
         }
@@ -145,6 +146,8 @@ public class Controller {
         }
     }
     public void afficherMat(){
+        //pas une vrai methode elle est temporaire pour voir quesquon fait
+        System.out.println("--------------------------------------------------------------------------------");
         for (int i=0;i<tabMat.size();i++){
             System.out.println(i+1+" Nom = "+tabMat.get(i).getNomMat() );
             System.out.println("  nb L : "+tabMat.get(i).getTailleL()+" nb C : "+tabMat.get(i).getTailleC());
