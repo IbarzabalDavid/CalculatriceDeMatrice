@@ -6,13 +6,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Controller {
     @FXML
-    private Button but;
-    public static Matrice matrice = new Matrice();
-    public static ArrayList<Element> element = new ArrayList<>();
     public static Spinner spinnerL= new Spinner(1,5,3);
     public static Spinner spinnerC= new Spinner(1,5,3);
     public static Label labelL = new Label("Entrez le nombre de lignes de votre matrice     ");
@@ -20,7 +18,9 @@ public class Controller {
     public static ArrayList<Matrice> tabMat=new ArrayList<>();
     @FXML
     public void nouvelleMatrice(){
-        //dialog1 nb ligne et colones
+        Matrice matrice=new Matrice();
+        matrice.setNomMat((char)(tabMat.size()+65));
+        //dialog0
         HBox hb = new HBox(labelL,spinnerL);
         hb.setSpacing(7);
         HBox hb1 = new HBox(labelC,spinnerC);
@@ -33,15 +33,12 @@ public class Controller {
         dialog.showAndWait();
         matrice.setTailleL((int)spinnerL.getValue());
         matrice.setTailleC((int)spinnerC.getValue());
-        //fin dialog1
-        ButtonType buttonDialog1 = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
-        AtomicInteger varTemp=new AtomicInteger();
-        varTemp.set(0);
-        int var = matrice.getTailleL()*matrice.getTailleC();
-        //dialog2 matrice button
-        Button[] tabBut = new Button[var];
-        for (int i=0;i<var;i++){
-            tabBut[i]=new Button();
+        //dialog1
+        matrice.setNbElement(matrice.getTailleL()*matrice.getTailleC());
+        NewButton[] tabBut = new NewButton[matrice.getNbElement()];
+        for (int i=0;i<matrice.getNbElement();i++){
+            tabBut[i]=new NewButton();
+            tabBut[i].setRank(i);
             tabBut[i].setText("["+i+"]");
             tabBut[i].setMaxSize(50,50);
             tabBut[i].setMinSize(50,50);
@@ -51,7 +48,7 @@ public class Controller {
         for (int i=0;i<matrice.getTailleL();i++){
             HBox hbTemp = new HBox();
             hbTemp.setSpacing(7);
-            for (int j=0;j<matrice.tailleC;j++){
+            for (int j=0;j<matrice.getTailleC();j++){
                 hbTemp.getChildren().addAll(tabBut[constante]);
                 constante++;
             }
@@ -61,75 +58,101 @@ public class Controller {
         Dialog dialog1 = new Dialog();
         dialog1.getDialogPane().setContent(vbTemp);
         dialog1.show();
-        //fin dialog2
-        //dialoge3 entrez valur case
+        //dialog2
         Label question = new Label("Entrez la valeur ");
         TextField tf = new TextField();
         HBox labTf = new HBox(question,tf);
         labTf.setSpacing(7);
-        //Disable i dont like
-        /*
-        int l=0;
-        for (int i=0;i<var;i++){
-            tabBut[i].setDisable(true);
-            if (tabBut[l]==tabBut[i] && tabBut[l].getText().equals("["+l+"]") || l==0){
-                tabBut[i].setDisable(false);
-                l++;
-            }
-        }*/
-        for (int i=0;i<var;i++){
+        Dialog dialog2 = new Dialog();
+        dialog2.getDialogPane().setContent(labTf);
+        dialog2.getDialogPane().getButtonTypes().add( new ButtonType("OK", ButtonBar.ButtonData.OK_DONE));
+        //Alerte erreur
+        Alert alerte = new Alert(Alert.AlertType.INFORMATION);
+        alerte.setTitle("Important");
+        alerte.setHeaderText("ERREUR");
+        alerte.setContentText("Vous devez entrez un nombre. \n(nombres décimaux sont aussi accepté ex: 3.5)");
+        //Action des boutons dans dialog1
+        for (int i=0;i<matrice.getNbElement();i++){
             final int temp=i;
             tabBut[i].setOnAction((event)->{
                 Element elem= new Element();
-               Dialog dialog2 = new Dialog();
-               dialog2.getDialogPane().setContent(labTf);
-               dialog2.getDialogPane().getButtonTypes().add( new ButtonType("OK", ButtonBar.ButtonData.OK_DONE));
-               dialog2.showAndWait();
-               elem.setValeur(Integer.parseInt(tf.getText()));
-               element.add(elem);
-               matrice.setElement(element);
-               tabBut[temp].setText(tf.getText());
-               tf.setText("1");
-               varTemp.set(varTemp.get()+1);
-               if (varTemp.get()==var){
-                  dialog1.getDialogPane().getButtonTypes().add(buttonDialog1);
-                  dialog1.setWidth(500);
-                  dialog1.setHeight(500);
-
-               }
+                elem.setPosition(tabBut[temp].getRank());
+                dialog2.showAndWait();
+                try {
+                    double value=Double.parseDouble(tf.getText());
+                    elem.setValeur(value);
+                    matrice.getElement().add(elem);
+                    tabBut[temp].setText(tf.getText());
+                    Boolean ttChiffrreOk=false;
+                    for (int j=0;j<matrice.getNbElement();j++){
+                        ttChiffrreOk=true;
+                        if (tabBut[j].getText().charAt(0)=='['){
+                            ttChiffrreOk=false;
+                            j=matrice.getNbElement();
+                        }
+                    }
+                    if (ttChiffrreOk){
+                        dialog1.getDialogPane().getButtonTypes().add( new ButtonType("ok", ButtonBar.ButtonData.OK_DONE));
+                        dialog1.setWidth(matrice.getTailleC()*60+40);
+                        dialog1.setHeight(matrice.getTailleL()*60+90);
+                        Collections.sort(matrice.getElement());
+                        tabMat.add(matrice);
+                        afficherMat();
+                    }
+                }
+                catch (Exception e){
+                    alerte.showAndWait();
+                }
+                tf.setText("");
             });
         }
-
     }
     @FXML
     public void supprimerMatrice(){
-        if (tabMat.size()==0){
-            Label label = new Label("Vous n'avez pas de matrice");
-            Dialog dialog = new Dialog();
-            dialog.getDialogPane().setContent(label);
-            dialog.getDialogPane().getButtonTypes().add(new ButtonType("OK", ButtonBar.ButtonData.OK_DONE));
-            dialog.showAndWait();
+        Label label=new Label("Entrez le nom de la matrice à supprimer");
+        TextField textField=new TextField();
+        HBox hb=new HBox(label,textField);
+        hb.setSpacing(7);
+        Dialog dialog3 = new Dialog();
+        dialog3.getDialogPane().setContent(hb);
+        dialog3.getDialogPane().getButtonTypes().add( new ButtonType("OK", ButtonBar.ButtonData.OK_DONE));
+        dialog3.showAndWait();
+        Alert alerte = new Alert(Alert.AlertType.INFORMATION);
+        alerte.setTitle("Important");
+        alerte.setHeaderText("ERREUR");
+        alerte.setContentText("Aucune matrice trouvée :(");
+        if (textField.getText().length()!=1){
+            alerte.showAndWait();
         }
-        else if (tabMat.size()==1){
-            tabMat.get(0).getElement().remove(0);
+        else if ((int)textField.getText().toUpperCase().charAt(0)<65||(int)textField.getText().toUpperCase().charAt(0)>(65+tabMat.size())){
+            alerte.showAndWait();
         }
         else {
-            int chiffre=65;
-            Dialog dialog1 = new Dialog();
-            CheckBox[] tabCheck = new CheckBox[tabMat.size()];
-            Label label1 = new Label("Quelle matrice voulez-vous supprimer?");
-            dialog1.getDialogPane().setContent(label1);
             for (int i=0;i<tabMat.size();i++){
-                CheckBox cb = new CheckBox("Matrice: "+ (char)chiffre);
-                tabCheck[i]=cb;
-                chiffre++;
+                if (tabMat.get(i).getNomMat()==textField.getText().toUpperCase().charAt(0)){
+                    tabMat.remove(i);
+                    renameMat();
+                    afficherMat();
+                    //Rentrer un dialog operation reussi montrer la matrice qui a ete supprimer && avertir que les nom des matrice on pt changer
+                }
             }
-            VBox vb = new VBox();
-            for (int i=0;i<tabCheck.length;i++){
-                vb.getChildren().add(tabCheck[i]);
+        }
+
+    }
+    public void renameMat(){
+        for (int i=0;i<tabMat.size();i++){
+            tabMat.get(i).setNomMat((char)(i+65));
+        }
+    }
+    public void afficherMat(){
+        for (int i=0;i<tabMat.size();i++){
+            System.out.println(i+1+" Nom = "+tabMat.get(i).getNomMat() );
+            System.out.println("  nb L : "+tabMat.get(i).getTailleL()+" nb C : "+tabMat.get(i).getTailleC());
+            System.out.println("  nb element : "+tabMat.get(i).getNbElement());
+            System.out.println("  Liste d'élément");
+            for (int j=0;j<tabMat.get(i).getElement().size();j++){
+                System.out.println("  "+j+"- "+tabMat.get(i).getElement().get(j).getValeur()+"   (pos= "+tabMat.get(i).getElement().get(j).getPosition()+")");
             }
-            dialog1.getDialogPane().setContent(vb);
-            dialog1.showAndWait();
         }
     }
 }

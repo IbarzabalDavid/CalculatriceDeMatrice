@@ -1,14 +1,16 @@
 package sample;
 
-public class Element {
-    int valeur;
-    int posL;
-    int posC;
+public class Element implements Comparable<Element>{
+    private double valeur;
+    private int position;
 
-    public int getValeur() { return valeur; }
-    public void setValeur(int valeur) { this.valeur = valeur; }
-    public int getPosL() { return posL; }
-    public void setPosL(int posL) { this.posL = posL; }
-    public int getPosC() { return posC;}
-    public void setPosC(int posC) { this.posC = posC; }
+
+    public double getValeur() { return valeur; }
+    public void setValeur(double valeur) { this.valeur = valeur; }
+    public int getPosition() { return position; }
+    public void setPosition(int position) { this.position = position; }
+
+    public int compareTo(Element o) {
+        return position-o.getPosition();
+    }
 }
