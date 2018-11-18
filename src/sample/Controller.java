@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -117,27 +118,42 @@ public class Controller {
         Dialog dialog3 = new Dialog();
         dialog3.getDialogPane().setContent(hb);
         dialog3.getDialogPane().getButtonTypes().add( new ButtonType("OK", ButtonBar.ButtonData.OK_DONE));
-        dialog3.showAndWait();
         Alert alerte = new Alert(Alert.AlertType.INFORMATION);
         alerte.setTitle("Important");
         alerte.setHeaderText("ERREUR");
         alerte.setContentText("Aucune matrice trouvée :(");
-        if (textField.getText().length()!=1){
-            alerte.showAndWait();
-        }
-        else if ((int)textField.getText().toUpperCase().charAt(0)<65||(int)textField.getText().toUpperCase().charAt(0)>(65+tabMat.size())){
-            alerte.showAndWait();
-        }
-        else {
-            for (int i=0;i<tabMat.size();i++){
-                if (tabMat.get(i).getNomMat()==textField.getText().toUpperCase().charAt(0)){
-                    tabMat.remove(i);
-                    renameMat();
-                    afficherMat();
-//Rentrer un dialog operation reussi montrer la matrice qui a ete supprimer && avertir que les nom des matrice on pt changer
+        Alert alerte1 = new Alert(Alert.AlertType.INFORMATION);
+        alerte1.setTitle("Réussi");
+        alerte1.setContentText("Attention!!! Il est possible que vos autres matrices aient changés de noms.");
+        Alert alerte2 = new Alert(Alert.AlertType.INFORMATION);
+        alerte2.setTitle("Important");
+        alerte2.setHeaderText("Erreur");
+        alerte2.setContentText("Vous n'avez aucune matrice!");
+        if (tabMat.size()!=0){
+            dialog3.showAndWait();
+            if (textField.getText().length()!=1){
+                alerte.showAndWait();
+            }
+            else if ((int)textField.getText().toUpperCase().charAt(0)<65||(int)textField.getText().toUpperCase().charAt(0)>(65+tabMat.size())){
+                alerte.showAndWait();
+            }
+            else {
+                for (int i=0;i<tabMat.size();i++){
+                    if (tabMat.get(i).getNomMat()==textField.getText().toUpperCase().charAt(0)){
+                        alerte1.setHeaderText("Opération réussi, la matrice "+textField.getText().toUpperCase()+" a été supprimée.");
+                        alerte1.showAndWait();
+ //pt afficher la matrice qui a ete delete
+                        tabMat.remove(i);
+                        renameMat();
+                        afficherMat();
+                    }
                 }
             }
         }
+        else {
+            alerte2.showAndWait();
+        }
+
 
     }
     public void renameMat(){
@@ -146,7 +162,8 @@ public class Controller {
         }
     }
     public void afficherMat(){
-        //pas une vrai methode elle est temporaire pour voir quesquon fait
+//pas une vrai methode elle est temporaire pour voir quesquon fait
+
         System.out.println("--------------------------------------------------------------------------------");
         for (int i=0;i<tabMat.size();i++){
             System.out.println(i+1+" Nom = "+tabMat.get(i).getNomMat() );
@@ -158,4 +175,5 @@ public class Controller {
             }
         }
     }
+
 }
