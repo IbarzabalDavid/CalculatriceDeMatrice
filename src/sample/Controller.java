@@ -146,65 +146,9 @@ public class Controller {
         }
     }
     @FXML
-    public void addition(){
-        int chiffre=65;
+    public void addition() {
+        int chiffre = 65;
         Label label1 = new Label("Quelle matrice voulez-vous additionner?");
         dialogCheckBox.getDialogPane().setContent(label1);
-        for (int i=0;i<tabMat.size();i++){
-            CheckBox checkB = new CheckBox("Matrice: "+ (char)chiffre);
-            tabCheck.add(checkB);
-            chiffre++;
-        }
-        VBox vb = new VBox();
-        for (int i=0;i<tabCheck.size();i++){
-            vb.getChildren().add(tabCheck.get(i));
-        }
-        vb.setSpacing(7);
-        dialogCheckBox.getDialogPane().setContent(vb);
-        dialogCheckBox.getDialogPane().getButtonTypes().add(new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE));
-        dialogCheckBox.showAndWait();
-
-    }
-    //https://stackoverflow.com/questions/30543460/multiple-but-limited-checkboxes-in-fxml-javafx
-    public void initialize() {
-        for (int i=0;i<tabCheck.size();i++){
-            configureCheckBox(tabCheck.get(i));
-            dialogCheckBox.getDialogPane().setContent(tabCheck.get(i));
-        }
-
-        but.setDisable(true);
-
-        numCheckBoxesSelected.addListener((obs, oldSelectedCount, newSelectedCount) -> {
-            if (newSelectedCount.intValue() >= maxNumSelected) {
-                unselectedCheckBoxes.forEach(cb -> cb.setDisable(true));
-                but.setDisable(false);
-            } else {
-                unselectedCheckBoxes.forEach(cb -> cb.setDisable(false));
-                but.setDisable(true);
-            }
-        });
-
-
-    }
-    //https://stackoverflow.com/questions/30543460/multiple-but-limited-checkboxes-in-fxml-javafx
-    private void configureCheckBox(CheckBox checkBox) {
-
-        if (checkBox.isSelected()) {
-            selectedCheckBoxes.add(checkBox);
-        } else {
-            unselectedCheckBoxes.add(checkBox);
-        }
-
-        checkBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-            if (isNowSelected) {
-                unselectedCheckBoxes.remove(checkBox);
-                selectedCheckBoxes.add(checkBox);
-            } else {
-                selectedCheckBoxes.remove(checkBox);
-                unselectedCheckBoxes.add(checkBox);
-            }
-
-        });
-
     }
 }
