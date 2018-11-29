@@ -1,10 +1,14 @@
 package sample;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import javafx.beans.property.ReadOnlyProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import sun.text.resources.ro.FormatData_ro;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -173,6 +177,308 @@ public class Controller {
             for (int j=0;j<tabMat.get(i).getElement().size();j++){
                 System.out.println("  "+j+"- "+tabMat.get(i).getElement().get(j).getValeur()+"   (pos= "+tabMat.get(i).getElement().get(j).getPosition()+")");
             }
+        }
+    }
+    public Matrice addition(Matrice matrice1,Matrice matrice2){
+        if (verif(matrice1,matrice2)){
+            Matrice matriceRes = new Matrice();
+            ArrayList<Element> elem = new ArrayList<>();
+            for (int i=0;i<matrice1.getElement().size();i++){
+                Element element = new Element();
+                element.setValeur(matrice1.getElement().get(i).getValeur()+matrice2.getElement().get(i).getValeur());
+                elem.add(element);
+            }
+            matriceRes.setElement(elem);
+            return matriceRes;
+        }
+        else {
+            return null;
+        }
+    }
+    public Matrice soustraction(Matrice matrice1, Matrice matrice2){
+        if (verif(matrice1,matrice2)){
+            Matrice matriceRes = new Matrice();
+            ArrayList<Element> elem = new ArrayList<>();
+            for (int i=0;i<matrice1.getElement().size();i++){
+                Element element = new Element();
+                element.setValeur(matrice1.getElement().get(i).getValeur()- matrice2.getElement().get(i).getValeur());
+                elem.add(element);
+            }
+            matriceRes.setElement(elem);
+            return matriceRes;
+        }
+        else {
+            return null;
+        }
+    }
+
+    public Matrice multiplication(Matrice matrice1, Matrice matrice2){
+
+        if (verif2(matrice1,matrice2)){
+            int var=0;
+            int result=0;
+            Matrice matriceRes = new Matrice();
+            ArrayList<Element> elem = new ArrayList<>();
+            for (int i =0;i<matrice1.getTailleC()*matrice2.getTailleL();i++){
+               Element element = new Element();
+               var=i;
+               for (int j=0;j<matrice1.getTailleL();j++){
+                   result+=(matrice1.getElement().get(var).getValeur()*matrice2.getElement().get(j).getValeur());
+                   var=var+matrice1.getTailleC();
+               }
+               element.setValeur(result);
+               elem.add(element);
+               result=0;
+            }
+            matriceRes.setElement(elem);
+            return matriceRes;
+        }
+        else {
+            return null;
+        }
+    }
+    public void multiScalaire(Matrice matrice1){
+        boolean ok =false;
+        Dialog dialog = new Dialog();
+        Label label = new Label("Quelle scalaire voulez-vous choisir?");
+        TextField tf = new TextField();
+        HBox hb = new HBox(label,tf);
+        dialog.getDialogPane().setContent(hb);
+        dialog.getDialogPane().getButtonTypes().add(new ButtonType("OK", ButtonBar.ButtonData.OK_DONE));
+        Alert alerte = new Alert(Alert.AlertType.INFORMATION);
+        alerte.setTitle("Important");
+        alerte.setHeaderText("ERREUR");
+        alerte.setContentText("Vous devez entrez un nombre. \n(nombres décimaux sont aussi accepté ex: 3.5)");
+        while (!ok){
+
+        dialog.showAndWait();
+        try {
+            double value=Double.parseDouble(tf.getText());
+            for (int i=0;i<matrice1.getElement().size();i++){
+                matrice1.getElement().get(i).setValeur(matrice1.getElement().get(i).getValeur()*value);
+                ok=true;
+            }
+
+        }
+        catch (Exception e){
+            alerte.showAndWait();
+            tf.setText("");
+            ok=false;
+        }
+
+    }
+    }
+
+    public Matrice puissance(Matrice matrice1){
+        if (verif3(matrice1)){
+            Matrice mat = matrice1;
+            boolean ok=false;
+            Dialog dialog = new Dialog();
+            Label label = new Label("Quelle scalaire voulez-vous choisir?");
+            TextField tf = new TextField();
+            HBox hb = new HBox(label,tf);
+            dialog.getDialogPane().setContent(hb);
+            dialog.getDialogPane().getButtonTypes().add(new ButtonType("OK", ButtonBar.ButtonData.OK_DONE));
+            Alert alerte = new Alert(Alert.AlertType.INFORMATION);
+            alerte.setTitle("Important");
+            alerte.setHeaderText("ERREUR");
+            alerte.setContentText("Vous devez entrez un nombre. \n(nombres décimaux sont aussi accepté ex: 3.5)");
+            while (!ok){
+
+                dialog.showAndWait();
+                try {
+                    double value=Double.parseDouble(tf.getText());
+                    int var=0;
+                    int result=0;
+                    int tour=0;
+
+                    while (value!=tour){
+                        for (int i =0;i<matrice1.getTailleC()*matrice1.getTailleL();i++){
+                            Element element = new Element();
+                            var=i;
+                            for (int j=0;j<matrice1.getTailleL();j++){
+                                result+=(mat.getElement().get(var).getValeur()*matrice1.getElement().get(j).getValeur());
+                                var=var+matrice1.getTailleC();
+                            }
+                            mat.getElement().get(i).setValeur(result);
+                            result=0;
+                        }
+                        tour++;
+                    }
+
+                }
+                catch (Exception e){
+                    alerte.showAndWait();
+                    tf.setText("");
+                    ok=false;
+                }
+            }
+            return mat;
+        }
+        else {
+            return null;
+        }
+    }
+    public Matrice transposition(Matrice matrice1){
+        if (verif3(matrice1)){
+            ArrayList<Element> elem = new ArrayList<>();
+            int var=0;
+            for (int j=0;j<matrice1.getTailleL();j++){
+                for (int i=0;i<matrice1.getTailleC();i++){
+                    elem.add(matrice1.getElement().get(var));
+                    var=var+matrice1.getTailleC();
+                }
+                var=(matrice1.getTailleC()*2-1);
+            }
+            matrice1.setElement(elem);
+            return matrice1;
+        }
+        else {
+            return null;
+        }
+    }
+    public Matrice determinant(Matrice matrice1){
+        if (verif3(matrice1)){
+            double rep=0;
+            double positif=0;
+            double negatif=0;
+            switch (matrice1.getTailleL()){
+                case 1:rep=(matrice1.getElement().get(0).getValeur());
+                matrice1.setDeterminant(rep);
+                break;
+                case 2: rep=((matrice1.getElement().get(0).getValeur()+matrice1.getElement().get(3).getValeur())-(matrice1.getElement().get(1).getValeur()+matrice1.getElement().get(2).getValeur()));
+                matrice1.setDeterminant(rep);
+                break;
+                case 3: positif=((matrice1.getElement().get(0).getValeur()*matrice1.getElement().get(4).getValeur()*matrice1.getElement().get(8).getValeur())+(matrice1.getElement().get(1).getValeur()*matrice1.getElement().get(5).getValeur()*matrice1.getElement().get(6).getValeur())+(matrice1.getElement().get(2).getValeur()*matrice1.getElement().get(3).getValeur()*matrice1.getElement().get(7).getValeur()));
+                        negatif=((matrice1.getElement().get(6).getValeur()*matrice1.getElement().get(4).getValeur()*matrice1.getElement().get(2).getValeur())+(matrice1.getElement().get(7).getValeur()*matrice1.getElement().get(5).getValeur()*matrice1.getElement().get(0).getValeur())+(matrice1.getElement().get(8).getValeur()*matrice1.getElement().get(3).getValeur()*matrice1.getElement().get(1).getValeur()));
+                        rep=(positif-negatif);
+                        matrice1.setDeterminant(rep);
+                        break;
+                default:
+                    int var= 0;
+                    int var1=0;
+                    int position=1;
+                    int ligne=1;
+                    int tour=0;
+                    double constante1=0;
+                    ArrayList<Number> tabcons = new ArrayList<>();
+                    for (int k=0;k<matrice1.getTailleL()-1;k++){
+                        var=var+matrice1.getTailleL()+1;
+                        position=1;
+                        tabcons.clear();
+                        for (int i=0;i<matrice1.getTailleL()-tour;i++){
+                            constante1=(matrice1.getElement().get(var+(matrice1.getTailleL()*position)).getValeur()/matrice1.getElement().get(var).getValeur());
+                            tabcons.add(constante1);
+                            position++;
+                        }
+                        for (int j=0;j<matrice1.getTailleL()-tour;j++){
+                            for (int i=0;i<matrice1.getTailleL();i++){
+                                matrice1.getElement().get(var1+(matrice1.getTailleC()*ligne)).setValeur(matrice1.getElement().get(var1+(matrice1.getTailleC()*ligne)).getValeur()-(tabcons.get(ligne-1).doubleValue()*matrice1.getElement().get(var1).getValeur()));
+                                var1++;
+                            }
+                            ligne++;
+                        }
+                        tour++;
+                    }
+                    var=0;
+                    for (int i=0;i<matrice1.getTailleL();i++){
+                        rep*=matrice1.getElement().get(var).getValeur();
+                        var=var+1+matrice1.getTailleL();
+                    }
+                    matrice1.setDeterminant(rep);
+                    break;
+            }
+        }
+        return matrice1;
+    }
+    public Matrice produitVect(Matrice matrice1, Matrice matrice2){
+        if (verif4(matrice1,matrice2)){
+            double compI=0;
+            double compJ=0;
+            double compK=0;
+            Matrice matriceRes= new Matrice();
+            ArrayList<Element> elem = new ArrayList<>();
+            Element elementI = new Element();
+            Element elementJ = new Element();
+            Element elementK = new Element();
+            compI=((matrice1.getElement().get(1).getValeur()*matrice2.getElement().get(2).getValeur())-(matrice1.getElement().get(2).getValeur()*matrice2.getElement().get(1).getValeur()));
+            compJ=((matrice1.getElement().get(0).getValeur()*matrice2.getElement().get(2).getValeur())-(matrice1.getElement().get(2).getValeur()*matrice2.getElement().get(0).getValeur()));
+            compK=((matrice1.getElement().get(0).getValeur()*matrice2.getElement().get(1).getValeur())-(matrice1.getElement().get(1).getValeur()*matrice2.getElement().get(0).getValeur()));
+            elementI.setValeur(compI);
+            elementJ.setValeur(0-compJ);
+            elementK.setValeur(compK);
+            elem.add(elementI);
+            elem.add(elementJ);
+            elem.add(elementK);
+            matriceRes.setElement(elem);
+            return matriceRes;
+        }
+        else {
+            return null;
+        }
+
+    }
+    public Matrice produitHadamard(Matrice matrice1, Matrice matrice2){
+        if (verif(matrice1,matrice2)){
+            Matrice matriceRes= new Matrice();
+            ArrayList<Element> elem = new ArrayList<>();
+            for (int i=0;i<matrice1.getNbElement();i++){
+                Element element = new Element();
+                element.setValeur(matrice1.getElement().get(i).getValeur()*matrice2.getElement().get(i).getValeur());
+                elem.add(element);
+            }
+            matriceRes.setElement(elem);
+            return matriceRes;
+        }
+        else{
+            return null;
+        }
+    }
+    public Matrice produitTensoriel(Matrice matrice1, Matrice matrice2){
+        Matrice matriceRes= new Matrice();
+        ArrayList<Element> elem = new ArrayList<>();
+        int var=0;
+        for (int i=0;i<matrice1.getTailleC();i++){
+            for (int j=0;j<matrice2.getTailleC();j++){
+                Element element = new Element();
+                element.setValeur(matrice1.getElement().get(var).getValeur()*matrice2.getElement().get(i).getValeur());
+                elem.add(element);
+            }
+            var++;
+        }
+        return matriceRes;
+    }
+
+    public Boolean verif(Matrice matrice1, Matrice matrice2){
+        if (matrice1.getTailleC()== matrice2.getTailleC() && matrice1.getTailleL()== matrice2.getTailleL()){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    public Boolean verif2(Matrice matrice1, Matrice matrice2){
+        if (matrice1.getTailleC()== matrice2.getTailleL()){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    public Boolean verif3(Matrice matrice1){
+        if (matrice1.getTailleL()==matrice1.getTailleC()){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    public Boolean verif4(Matrice matrice1,Matrice matrice2){
+        if (matrice1.getTailleL()==1 && matrice2.getTailleL()==1 && matrice1.getTailleC()==3 && matrice1.getTailleC()==3){
+            return true;
+        }
+        else {
+            return false;
         }
     }
 

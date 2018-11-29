@@ -9,6 +9,7 @@ public class Matrice {
     private char nomMat;
     private int nbElement;
     private ArrayList<Element> element=new ArrayList<>();
+    private double determinant;
 
     public int getTailleL() { return tailleL; }
     public void setTailleL(int tailleL) { this.tailleL = tailleL; }
@@ -20,4 +21,6 @@ public class Matrice {
     public void setNomMat(char nomMat) { this.nomMat = nomMat; }
     public int getNbElement() { return nbElement; }
     public void setNbElement(int nbElement) { this.nbElement = nbElement; }
+    public double getDeterminant() { return determinant;}
+    public void setDeterminant(double determinant) { this.determinant = determinant;}
 }
