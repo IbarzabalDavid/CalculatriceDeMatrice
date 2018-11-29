@@ -3,8 +3,10 @@ package sample;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +14,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Controller {
     @FXML
+    public BorderPane bPaneIni;
+
     public static ArrayList<Matrice> tabMat=new ArrayList<>();
     @FXML
     public void nouvelleMatrice(){
@@ -181,9 +185,47 @@ public class Controller {
     }
     public void afficherMat(){
 //pas une vrai methode elle est temporaire pour voir quesquon fait
-
-        System.out.println("--------------------------------------------------------------------------------");
+        VBox tabMatAffi=new VBox();
+        HBox ligneMat=new HBox();
         for (int i=0;i<tabMat.size();i++){
+            Label name=new Label(Character.toString(tabMat.get(i).getNomMat())+" = ");
+            VBox mat=new VBox();
+            for (int j=0;j<tabMat.get(i).getTailleL();j++){
+                HBox ligne= new HBox();
+                for (int k=0;k<tabMat.get(i).getTailleC();k++){
+                    ligne.getChildren().add(new Label(Double.toString(tabMat.get(i).getElement().get((tabMat.get(i).getTailleC()*j)+k).getValeur())));
+                    ligne.setAlignment(Pos.CENTER);
+                    ligne.setSpacing(7);
+                }
+                mat.getChildren().add(ligne);
+                mat.setAlignment(Pos.CENTER);
+                mat.setSpacing(7);
+            }
+
+            HBox matTot=new HBox(name,mat);
+            matTot.setAlignment(Pos.CENTER);
+            matTot.setSpacing(7);
+            ligneMat.getChildren().add(matTot);
+            ligneMat.setAlignment(Pos.CENTER);
+            ligneMat.setSpacing(50);
+        }
+        tabMatAffi.getChildren().add(ligneMat);
+        tabMatAffi.setAlignment(Pos.CENTER);
+        tabMatAffi.setSpacing(50);
+
+        bPaneIni.setCenter(tabMatAffi);
+
+
+
+
+
+
+
+
+
+
+         System.out.println("--------------------------------------------------------------------------------");
+         for (int i=0;i<tabMat.size();i++){
             System.out.println(i+1+" Nom = "+tabMat.get(i).getNomMat() );
             System.out.println("  nb L : "+tabMat.get(i).getTailleL()+" nb C : "+tabMat.get(i).getTailleC());
             System.out.println("  nb element : "+tabMat.get(i).getNbElement());
@@ -191,7 +233,7 @@ public class Controller {
             for (int j=0;j<tabMat.get(i).getElement().size();j++){
                 System.out.println("  "+j+"- "+tabMat.get(i).getElement().get(j).getValeur()+"   (pos= "+tabMat.get(i).getElement().get(j).getPosition()+")");
             }
-        }
+         }
     }
     public void addition(){
 
