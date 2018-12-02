@@ -4,8 +4,11 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
@@ -14,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Controller {
     @FXML
-    public BorderPane bPaneIni;
+    public GridPane placeMat;
 
     public static ArrayList<Matrice> tabMat=new ArrayList<>();
     @FXML
@@ -24,6 +27,7 @@ public class Controller {
             alerte2.setTitle("Important");
             alerte2.setHeaderText("ERREUR");
             alerte2.setContentText("Vous avez deéjà le nombre maximum de matricew");
+            alerte2.showAndWait();
         }
         else {
             Matrice matrice=new Matrice();
@@ -184,56 +188,42 @@ public class Controller {
         }
     }
     public void afficherMat(){
-//pas une vrai methode elle est temporaire pour voir quesquon fait
-        VBox tabMatAffi=new VBox();
-        HBox ligneMat=new HBox();
-        for (int i=0;i<tabMat.size();i++){
-            Label name=new Label(Character.toString(tabMat.get(i).getNomMat())+" = ");
-            VBox mat=new VBox();
-            for (int j=0;j<tabMat.get(i).getTailleL();j++){
-                HBox ligne= new HBox();
-                for (int k=0;k<tabMat.get(i).getTailleC();k++){
-                    ligne.getChildren().add(new Label(Double.toString(tabMat.get(i).getElement().get((tabMat.get(i).getTailleC()*j)+k).getValeur())));
-                    ligne.setAlignment(Pos.CENTER);
-                    ligne.setSpacing(7);
+        placeMat.getChildren().clear();
+        for (int i=0;i<3;i++){
+            for (int j=0;j<3;j++){
+                HBox matriceEtNom=new HBox();
+                if (3*i+j<tabMat.size()){
+                    Label name=new Label(Character.toString(tabMat.get(3*i+j).getNomMat())+" = ");
+                    name.setScaleX(2.5);
+                    name.setScaleY(2.5);
+                    Polyline crochetOpen=new Polyline(5,0,0,0,0,35,5,35);
+                    Polyline crochetClose=new Polyline(0,0,5,0,5,35,0,35);
+                    crochetClose.setScaleY(1.4*tabMat.get(3*i+j).getTailleL());
+                    crochetOpen.setScaleY(1.4*tabMat.get(3*i+j).getTailleL());
+                    crochetClose.setScaleX(tabMat.get(3*i+j).getTailleL());
+                    crochetOpen.setScaleX(tabMat.get(3*i+j).getTailleL());
+                    VBox mat=new VBox();
+                    for (int l=0;l<tabMat.get(3*i+j).getTailleL();l++){
+                        HBox ligne= new HBox();
+                        for (int k=0;k<tabMat.get(3*i+j).getTailleC();k++){
+                            Label chiffre=new Label(Double.toString(tabMat.get(3*i+j).getElement().get((tabMat.get(3*i+j).getTailleC()*l)+k).getValeur()));
+                            chiffre.setScaleX(2);
+                            chiffre.setScaleY(2);
+                            ligne.getChildren().add(chiffre);
+                            ligne.setAlignment(Pos.CENTER);
+                            ligne.setSpacing(40);
+                        }
+                        mat.getChildren().add(ligne);
+                        mat.setAlignment(Pos.CENTER);
+                        mat.setSpacing(40);
+                    }
+                    matriceEtNom.getChildren().addAll(name,crochetOpen,mat,crochetClose);
+                    matriceEtNom.setSpacing(23);
+                    matriceEtNom.setAlignment(Pos.CENTER);
                 }
-                mat.getChildren().add(ligne);
-                mat.setAlignment(Pos.CENTER);
-                mat.setSpacing(7);
+                placeMat.add(matriceEtNom,j,i);
             }
-
-            HBox matTot=new HBox(name,mat);
-            matTot.setAlignment(Pos.CENTER);
-            matTot.setSpacing(7);
-            ligneMat.getChildren().add(matTot);
-            ligneMat.setAlignment(Pos.CENTER);
-            ligneMat.setSpacing(50);
         }
-        tabMatAffi.getChildren().add(ligneMat);
-        tabMatAffi.setAlignment(Pos.CENTER);
-        tabMatAffi.setSpacing(50);
-
-        bPaneIni.setCenter(tabMatAffi);
-
-
-
-
-
-
-
-
-
-
-         System.out.println("--------------------------------------------------------------------------------");
-         for (int i=0;i<tabMat.size();i++){
-            System.out.println(i+1+" Nom = "+tabMat.get(i).getNomMat() );
-            System.out.println("  nb L : "+tabMat.get(i).getTailleL()+" nb C : "+tabMat.get(i).getTailleC());
-            System.out.println("  nb element : "+tabMat.get(i).getNbElement());
-            System.out.println("  Liste d'élément");
-            for (int j=0;j<tabMat.get(i).getElement().size();j++){
-                System.out.println("  "+j+"- "+tabMat.get(i).getElement().get(j).getValeur()+"   (pos= "+tabMat.get(i).getElement().get(j).getPosition()+")");
-            }
-         }
     }
     public void addition(){
 
