@@ -166,6 +166,7 @@ public class Controller {
                     if (tabMat.get(i).getNomMat()==textField.getText().toUpperCase().charAt(0)){
                         alerte1.setHeaderText("Opération réussi, la matrice "+textField.getText().toUpperCase()+" a été supprimée.");
                         alerte1.showAndWait();
+ //pt afficher la matrice qui a ete delete
                         tabMat.remove(i);
                         renameMat();
                         afficherMat();
@@ -227,7 +228,5 @@ public class Controller {
             }
         }
     }
-    public void addition(){
 
-    }
 }
