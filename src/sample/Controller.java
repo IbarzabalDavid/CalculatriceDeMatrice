@@ -26,7 +26,7 @@ public class Controller {
             Alert alerte2 = new Alert(Alert.AlertType.INFORMATION);
             alerte2.setTitle("Important");
             alerte2.setHeaderText("ERREUR");
-            alerte2.setContentText("Vous avez deéjà le nombre maximum de matricew");
+            alerte2.setContentText("Vous avez deéjà le nombre maximum de matrices");
             alerte2.showAndWait();
         }
         else {
@@ -118,7 +118,6 @@ public class Controller {
                                     dialog1.setWidth(matrice.getTailleC()*60+40);
                                     dialog1.setHeight(matrice.getTailleL()*60+90);
                                 }
-
                             }
                         }
                         catch (Exception e){
@@ -133,7 +132,6 @@ public class Controller {
                 afficherMat();
             }
         }
-
     }
     @FXML
     public void supprimerMatrice(){
@@ -168,7 +166,6 @@ public class Controller {
                     if (tabMat.get(i).getNomMat()==textField.getText().toUpperCase().charAt(0)){
                         alerte1.setHeaderText("Opération réussi, la matrice "+textField.getText().toUpperCase()+" a été supprimée.");
                         alerte1.showAndWait();
- //pt afficher la matrice qui a ete delete
                         tabMat.remove(i);
                         renameMat();
                         afficherMat();
@@ -179,8 +176,6 @@ public class Controller {
         else {
             alerte2.showAndWait();
         }
-
-
     }
     public void renameMat(){
         for (int i=0;i<tabMat.size();i++){
@@ -206,7 +201,14 @@ public class Controller {
                     for (int l=0;l<tabMat.get(3*i+j).getTailleL();l++){
                         HBox ligne= new HBox();
                         for (int k=0;k<tabMat.get(3*i+j).getTailleC();k++){
-                            Label chiffre=new Label(Double.toString(tabMat.get(3*i+j).getElement().get((tabMat.get(3*i+j).getTailleC()*l)+k).getValeur()));
+                            double d=tabMat.get(3*i+j).getElement().get((tabMat.get(3*i+j).getTailleC()*l)+k).getValeur();
+                            Label chiffre=new Label();
+                            if ((d % 1) == 0){
+                                chiffre.setText(Integer.toString((int)d));
+                            }
+                            else {
+                                chiffre.setText(Double.toString(d));
+                            }
                             chiffre.setScaleX(2);
                             chiffre.setScaleY(2);
                             ligne.getChildren().add(chiffre);

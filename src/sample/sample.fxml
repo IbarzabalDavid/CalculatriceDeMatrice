@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -36,11 +37,14 @@
                <content>
                   <BorderPane fx:id="bPaneIni" prefHeight="200.0" prefWidth="200.0">
                      <left>
-                        <VBox prefHeight="329.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <VBox prefHeight="500.0" prefWidth="200.0" spacing="100.0" translateY="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Button fx:id="but" mnemonicParsing="false" onAction="#nouvelleMatrice" prefHeight="25.0" prefWidth="200.0" text="Créer une matrice" />
-                              <Button fx:id="butSup" mnemonicParsing="false" onAction="#supprimerMatrice" prefWidth="200.0" text="Supprimer matrice" />
+                              <Button fx:id="but" mnemonicParsing="false" onAction="#nouvelleMatrice" prefHeight="200.0" prefWidth="200.0" text="Créer une matrice" />
+                              <Button fx:id="butSup" mnemonicParsing="false" onAction="#supprimerMatrice" prefHeight="200.0" prefWidth="200.0" text="Supprimer matrice" />
                            </children>
+                           <BorderPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </BorderPane.margin>
                         </VBox>
                      </left>
                      <center>
