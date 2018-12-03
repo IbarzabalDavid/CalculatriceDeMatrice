@@ -3,8 +3,13 @@ package sample;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Polyline;
+import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +17,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Controller {
     @FXML
+    public GridPane placeMat;
+
     public static ArrayList<Matrice> tabMat=new ArrayList<>();
     @FXML
     public void nouvelleMatrice(){
@@ -19,7 +26,8 @@ public class Controller {
             Alert alerte2 = new Alert(Alert.AlertType.INFORMATION);
             alerte2.setTitle("Important");
             alerte2.setHeaderText("ERREUR");
-            alerte2.setContentText("Vous avez deéjà le nombre maximum de matricew");
+            alerte2.setContentText("Vous avez deéjà le nombre maximum de matrices");
+            alerte2.showAndWait();
         }
         else {
             Matrice matrice=new Matrice();
@@ -110,7 +118,6 @@ public class Controller {
                                     dialog1.setWidth(matrice.getTailleC()*60+40);
                                     dialog1.setHeight(matrice.getTailleL()*60+90);
                                 }
-
                             }
                         }
                         catch (Exception e){
@@ -125,7 +132,6 @@ public class Controller {
                 afficherMat();
             }
         }
-
     }
     @FXML
     public void supprimerMatrice(){
@@ -160,7 +166,6 @@ public class Controller {
                     if (tabMat.get(i).getNomMat()==textField.getText().toUpperCase().charAt(0)){
                         alerte1.setHeaderText("Opération réussi, la matrice "+textField.getText().toUpperCase()+" a été supprimée.");
                         alerte1.showAndWait();
- //pt afficher la matrice qui a ete delete
                         tabMat.remove(i);
                         renameMat();
                         afficherMat();
@@ -171,8 +176,6 @@ public class Controller {
         else {
             alerte2.showAndWait();
         }
-
-
     }
     public void renameMat(){
         for (int i=0;i<tabMat.size();i++){
@@ -180,16 +183,47 @@ public class Controller {
         }
     }
     public void afficherMat(){
-//pas une vrai methode elle est temporaire pour voir quesquon fait
-
-        System.out.println("--------------------------------------------------------------------------------");
-        for (int i=0;i<tabMat.size();i++){
-            System.out.println(i+1+" Nom = "+tabMat.get(i).getNomMat() );
-            System.out.println("  nb L : "+tabMat.get(i).getTailleL()+" nb C : "+tabMat.get(i).getTailleC());
-            System.out.println("  nb element : "+tabMat.get(i).getNbElement());
-            System.out.println("  Liste d'élément");
-            for (int j=0;j<tabMat.get(i).getElement().size();j++){
-                System.out.println("  "+j+"- "+tabMat.get(i).getElement().get(j).getValeur()+"   (pos= "+tabMat.get(i).getElement().get(j).getPosition()+")");
+        placeMat.getChildren().clear();
+        for (int i=0;i<3;i++){
+            for (int j=0;j<3;j++){
+                HBox matriceEtNom=new HBox();
+                if (3*i+j<tabMat.size()){
+                    Label name=new Label(Character.toString(tabMat.get(3*i+j).getNomMat())+" = ");
+                    name.setScaleX(2.5);
+                    name.setScaleY(2.5);
+                    Polyline crochetOpen=new Polyline(5,0,0,0,0,35,5,35);
+                    Polyline crochetClose=new Polyline(0,0,5,0,5,35,0,35);
+                    crochetClose.setScaleY(1.4*tabMat.get(3*i+j).getTailleL());
+                    crochetOpen.setScaleY(1.4*tabMat.get(3*i+j).getTailleL());
+                    crochetClose.setScaleX(tabMat.get(3*i+j).getTailleL());
+                    crochetOpen.setScaleX(tabMat.get(3*i+j).getTailleL());
+                    VBox mat=new VBox();
+                    for (int l=0;l<tabMat.get(3*i+j).getTailleL();l++){
+                        HBox ligne= new HBox();
+                        for (int k=0;k<tabMat.get(3*i+j).getTailleC();k++){
+                            double d=tabMat.get(3*i+j).getElement().get((tabMat.get(3*i+j).getTailleC()*l)+k).getValeur();
+                            Label chiffre=new Label();
+                            if ((d % 1) == 0){
+                                chiffre.setText(Integer.toString((int)d));
+                            }
+                            else {
+                                chiffre.setText(Double.toString(d));
+                            }
+                            chiffre.setScaleX(2);
+                            chiffre.setScaleY(2);
+                            ligne.getChildren().add(chiffre);
+                            ligne.setAlignment(Pos.CENTER);
+                            ligne.setSpacing(40);
+                        }
+                        mat.getChildren().add(ligne);
+                        mat.setAlignment(Pos.CENTER);
+                        mat.setSpacing(40);
+                    }
+                    matriceEtNom.getChildren().addAll(name,crochetOpen,mat,crochetClose);
+                    matriceEtNom.setSpacing(23);
+                    matriceEtNom.setAlignment(Pos.CENTER);
+                }
+                placeMat.add(matriceEtNom,j,i);
             }
         }
     }
