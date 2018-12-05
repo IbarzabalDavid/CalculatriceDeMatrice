@@ -182,24 +182,55 @@ public class Matrice {
         }
     }
     public Matrice inversion(){
-        this.determinant();
-        if (verif5(this)){
-            int tour=1;
-            Matrice matriceRes= new Matrice();
-            matriceRes.transposition();
-            
-            for (int i=0;i<matriceRes.getElement().size();i++){
-                if (tour==1){
-                    tour++;
-                }else {
-                    matriceRes.getElement().get(i).setValeur(0-matriceRes.getElement().get(i).getValeur());
-                    tour--;
-                }
-            }
-            return matriceRes;
-        }else {
-            return null;
-        }
+       if (verif5(this)) {
+           Matrice matriceRes = new Matrice();
+           int var = 0;
+           int valeur = 0;
+           ArrayList<Element> autre = new ArrayList<>();
+           for (int i = 0; i < this.getElement().size() * 2; i++) {
+               for (int j = 0; j < this.getTailleC(); j++) {
+                   autre.add(this.getElement().get(j + var));
+               }
+               for (int j = 0; j < this.getTailleC(); j++) {
+                   if (j == valeur) {
+                       Element element = new Element();
+                       element.setValeur(1);
+                       autre.add(element);
+                   } else {
+                       Element element = new Element();
+                       element.setValeur(0);
+                       autre.add(element);
+                   }
+               }
+               valeur++;
+               var = var + this.getTailleC();
+           }
+            int varUti=0;
+           int valeurMult=this.getTailleC()*2;
+           for (int k=0;k<this.getTailleC()*2;k++){
+               for (int i=0;i<this.getTailleC()*2;i++){
+                   autre.get(i).setValeur(autre.get(i).getValeur()/autre.get(varUti).getValeur());
+               }
+               for (int j=0;j<this.getTailleL();j++){
+                   for (int i=0;i<this.getTailleC()*2;i++){
+                       autre.get(i).setValeur(autre.get(i).getValeur()*autre.get(valeurMult).getValeur());
+                   }
+                   for (int i=0;i<this.getTailleC()*2;i++){
+                       autre.get(valeurMult+i).setValeur(autre.get(valeurMult+1).getValeur()-autre.get(varUti+i).getValeur());
+                   }
+                   valeurMult=valeurMult+(this.getTailleC()*2);
+               }
+
+               varUti++;
+
+           }
+
+           return matriceRes;
+       }else {
+           return null;
+       }
+
+
     }
     public Matrice transposition(){
         Matrice matriceRes = new Matrice();
@@ -324,6 +355,7 @@ public class Matrice {
         ArrayList<Element> elem = new ArrayList<>();
         int var=0;
         int var1=0;
+        int nombre=0;
         for (int n=0;n<this.getTailleL();n++){
             for (int k=0;k<matrice2.getTailleL();k++){
                 for (int i=0;i<this.getTailleC();i++){
@@ -334,10 +366,12 @@ public class Matrice {
                     }
                     var++;
                 }
-                var=var-this.getTailleC();
+                var=nombre;
                 var1=var1+matrice2.getTailleC();
             }
-            var=var+this.getTailleC();
+            var1=0;
+            nombre=nombre+this.getTailleC();
+            var=nombre;
         }
         matriceRes.setElement(elem);
         matriceRes.setTailleL(this.getTailleL()*matrice2.getTailleL());
