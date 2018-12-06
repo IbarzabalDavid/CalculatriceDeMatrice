@@ -187,7 +187,7 @@ public class Matrice {
            int var = 0;
            int valeur = 0;
            ArrayList<Element> autre = new ArrayList<>();
-           for (int i = 0; i < this.getElement().size() * 2; i++) {
+           for (int i = 0; i < this.getTailleL(); i++) {
                for (int j = 0; j < this.getTailleC(); j++) {
                    autre.add(this.getElement().get(j + var));
                }
@@ -206,25 +206,39 @@ public class Matrice {
                var = var + this.getTailleC();
            }
             int varUti=0;
+           int tour=0;
            int valeurMult=this.getTailleC()*2;
-           for (int k=0;k<this.getTailleC()*2;k++){
-               for (int i=0;i<this.getTailleC()*2;i++){
-                   autre.get(i).setValeur(autre.get(i).getValeur()/autre.get(varUti).getValeur());
-               }
+           //faire la diagonale de 1
+           for (int k=0;k<this.getTailleC();k++){
                for (int j=0;j<this.getTailleL();j++){
                    for (int i=0;i<this.getTailleC()*2;i++){
-                       autre.get(i).setValeur(autre.get(i).getValeur()*autre.get(valeurMult).getValeur());
-                   }
-                   for (int i=0;i<this.getTailleC()*2;i++){
-                       autre.get(valeurMult+i).setValeur(autre.get(valeurMult+1).getValeur()-autre.get(varUti+i).getValeur());
-                   }
-                   valeurMult=valeurMult+(this.getTailleC()*2);
+                   autre.get(i).setValeur(autre.get(i).getValeur()/autre.get(0).getValeur());
                }
-
-               varUti++;
-
+                   //egal a la ligne quon doit enelever les nombres
+                   for (int i=0;i<(this.getTailleC()*2)-tour;i++){
+                       autre.get(varUti+i).setValeur(autre.get(varUti+i).getValeur()*autre.get(valeurMult).getValeur());
+                   }
+                   //mettre les nombres a 0
+                   for (int i=0;i<(this.getTailleC()*2)-tour;i++){
+                       autre.get(valeurMult+i).setValeur(autre.get(valeurMult+i).getValeur()-autre.get(varUti+i).getValeur());
+                   }
+                   valeurMult=valeurMult+(this.getTailleC()*2)-(tour*this.getTailleC()*2);
+               }
+               tour++;
+               varUti=varUti+this.getTailleC()+1;
+               valeurMult=varUti+this.getTailleC()*2;
            }
-
+           int chiffre=this.getTailleC();
+           ArrayList<Element> bonne = new ArrayList<>();
+           for (int i=0;i<autre.size()/2;i++){
+               for (int j=0;j<this.getTailleC();j++){
+                   bonne.add(autre.get(chiffre+i));
+               }
+              chiffre=chiffre+this.getTailleC()*2;
+           }
+           matriceRes.setElement(bonne);
+           matriceRes.setTailleC(this.getTailleC());
+           matriceRes.setTailleL(this.getTailleL());
            return matriceRes;
        }else {
            return null;

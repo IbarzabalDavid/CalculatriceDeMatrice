@@ -33,7 +33,7 @@
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab text="Initiation">
+          <Tab fx:id="tabIni" text="Initiation">
                <content>
                   <BorderPane fx:id="bPaneIni" prefHeight="200.0" prefWidth="200.0">
                      <left>

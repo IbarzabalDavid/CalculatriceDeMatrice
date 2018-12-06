@@ -1,7 +1,10 @@
 package sample;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.print.PageLayout;
+import javafx.print.PrinterJob;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -10,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Controller {
+    @FXML
+    Tab tabIni;
     @FXML
     public GridPane placeMat;
 
@@ -24,6 +29,7 @@ public class Controller {
             alerte2.showAndWait();
         }
         else {
+            printThis();
             Matrice matrice=new Matrice();
             matrice.setNomMat((char)(tabMat.size()+65));
             //dialog0
@@ -222,5 +228,26 @@ public class Controller {
             }
         }
     }
+    //https://stackoverflow.com/questions/34815660/javafx-image-getting-scaled-to-25-and-then-getting-printed
+    //Manque de changer la chose qu'on veut imprimer.
+    public void printThis() {
+        ImageView imageView = new ImageView(tabIni.getTabPane().snapshot(null,null));
+        new Thread(() -> printImage(imageView)).start();
+    }
+
+    public void printImage(ImageView image) {
+        PrinterJob job = PrinterJob.createPrinterJob();
+        PageLayout pageLayout = job.getJobSettings().getPageLayout();
+        //PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+        job.getJobSettings().setPageLayout(pageLayout);
+        if (job != null && job.showPrintDialog(Main.returnRoot().getScene().getWindow())) {
+            boolean success = job.printPage(image);
+            if (success) {
+                job.endJob();
+            }
+        }
+    }
+
+
 
 }

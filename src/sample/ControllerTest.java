@@ -9,6 +9,9 @@ class ControllerTest {
     Matrice a,b,c;
     @BeforeEach
     void setUp() {
+        Matrice matriceRep = new Matrice();
+        a= new Matrice();
+        a.setNomMat('A');
     }
 
     @Test
