@@ -2,6 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -10,10 +12,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -68,22 +71,43 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
-                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="7.0" BorderPane.alignment="CENTER">
+                        <HBox fx:id="ligneOp" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Button mnemonicParsing="false" prefWidth="211.0" text="Addition" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefWidth="211.0" text="Soustraction" />
-                              <Button layoutX="10.0" layoutY="41.0" mnemonicParsing="false" text="Multiplication par un scalaire" />
-                              <Button layoutX="10.0" layoutY="72.0" mnemonicParsing="false" prefWidth="211.0" text="Puissance" />
-                              <Button layoutX="10.0" layoutY="103.0" mnemonicParsing="false" prefWidth="211.0" text="Transposition" />
-                              <Button layoutX="10.0" layoutY="134.0" mnemonicParsing="false" prefWidth="211.0" text="Inversion" />
-                              <Button layoutX="10.0" layoutY="165.0" mnemonicParsing="false" prefWidth="211.0" text="Produit matriciel" />
-                              <Button layoutX="10.0" layoutY="196.0" mnemonicParsing="false" prefWidth="211.0" text="Produit vectoriel" />
-                              <Button layoutX="10.0" layoutY="227.0" mnemonicParsing="false" prefWidth="211.0" text="Produit d'Hadamard" />
-                              <Button layoutX="10.0" layoutY="258.0" mnemonicParsing="false" prefWidth="211.0" text="Produit tensoriel" />
-                              <Button layoutX="10.0" layoutY="289.0" mnemonicParsing="false" prefWidth="211.0" text="Calcul du déterminant" />
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label text="Matrice" />
+                                    <ChoiceBox fx:id="matrice1" prefWidth="150.0" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label text="Opération" />
+                                    <ChoiceBox fx:id="operation1" prefWidth="50.0" />
+                                 </children>
+                              </VBox>
                            </children>
-                        </VBox>
+                        </HBox>
                      </center>
+                     <left>
+                        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0" text="Reset" />
+                           </children>
+                           <BorderPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </BorderPane.margin>
+                        </VBox>
+                     </left>
+                     <right>
+                        <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="130.0" BorderPane.alignment="BOTTOM_RIGHT">
+                           <children>
+                              <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="130.0" text="Calcul" />
+                           </children>
+                           <BorderPane.margin>
+                              <Insets bottom="35.0" left="35.0" right="35.0" top="35.0" />
+                           </BorderPane.margin>
+                        </VBox>
+                     </right>
                   </BorderPane>
                </content>
           </Tab>

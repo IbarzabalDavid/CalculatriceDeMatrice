@@ -1,4 +1,6 @@
 package sample;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -7,9 +9,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polyline;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class Controller {
+
+    public HBox ligneOp;
+    @FXML
+    public ChoiceBox<String> matrice1;
+    @FXML
+    public ChoiceBox operation1;
     @FXML
     public GridPane placeMat;
 
@@ -123,6 +133,7 @@ public class Controller {
                 dialog1.showAndWait();
                 Collections.sort(matrice.getElement());
                 tabMat.add(matrice);
+                setChoiceMat1();
                 afficherMat();
             }
         }
@@ -162,6 +173,7 @@ public class Controller {
                         alerte1.showAndWait();
  //pt afficher la matrice qui a ete delete
                         tabMat.remove(i);
+                        setChoiceMat1();
                         renameMat();
                         afficherMat();
                     }
@@ -221,6 +233,24 @@ public class Controller {
                 placeMat.add(matriceEtNom,j,i);
             }
         }
+    }
+    public void setChoiceMat1(){
+        ArrayList<String> liste = new ArrayList<>();
+        for (int i=0;i<tabMat.size();i++){
+            liste.add(Character.toString(tabMat.get(i).getNomMat()));
+        }
+        ObservableList<String> observableList = FXCollections.observableList(liste);
+        matrice1.setItems(observableList);
+        matrice1.setOnAction((event -> {
+            ArrayList<String> liste1 = new ArrayList<>();
+            if (tabMat.get((int)matrice1.getValue().indexOf(0)-65).getTailleL()==tabMat.get((int)matrice1.getValue().indexOf(0)-65).getTailleC()){
+                liste1.add("Det");
+            }
+
+            liste1.add("Bamboozle");
+            ObservableList<String> observableList1 = FXCollections.observableList(liste1);
+            operation1.setItems(observableList1);
+        }));
     }
 
 }
