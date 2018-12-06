@@ -243,11 +243,17 @@ public class Controller {
         matrice1.setItems(observableList);
         matrice1.setOnAction((event -> {
             ArrayList<String> liste1 = new ArrayList<>();
-            if (tabMat.get((int)matrice1.getValue().indexOf(0)-65).getTailleL()==tabMat.get((int)matrice1.getValue().indexOf(0)-65).getTailleC()){
-                liste1.add("Det");
-            }
-
-            liste1.add("Bamboozle");
+            liste1.add("addition");
+            liste1.add("soustraction");
+            liste1.add("multiplication par scalaire");
+            liste1.add("puissance");
+            liste1.add("tranposition");
+            liste1.add("inversion");
+            liste1.add("produit matricielle");
+            liste1.add("produit vectorielle");
+            liste1.add("produit tensorielle");
+            liste1.add("produit d'Hadamard");
+            liste1.add("Déterminant");
             ObservableList<String> observableList1 = FXCollections.observableList(liste1);
             operation1.setItems(observableList1);
         }));
