@@ -71,27 +71,28 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
-                        <HBox fx:id="ligneOp" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <HBox fx:id="ligneOp" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="50.0">
                                  <children>
                                     <Label text="Matrice" />
-                                    <ChoiceBox fx:id="matrice1" prefWidth="150.0" />
+                                    <ChoiceBox fx:id="matrice1" prefWidth="50.0" />
                                  </children>
                               </VBox>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0">
                                  <children>
                                     <Label text="Opération" />
-                                    <ChoiceBox fx:id="operation1" prefWidth="50.0" />
+                                    <ChoiceBox fx:id="operation1" prefWidth="200.0" />
                                  </children>
                               </VBox>
                            </children>
                         </HBox>
                      </center>
                      <left>
-                        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                        <VBox prefHeight="200.0" prefWidth="125.0" spacing="10.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0" text="Reset" />
+                              <Button mnemonicParsing="false" onAction="#reset" prefHeight="75.0" prefWidth="125.0" text="Reset" />
+                              <Button mnemonicParsing="false" onAction="#addOp" prefHeight="75.0" prefWidth="125.0" text="Ajouter Opétation" />
                            </children>
                            <BorderPane.margin>
                               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -101,7 +102,7 @@
                      <right>
                         <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="130.0" BorderPane.alignment="BOTTOM_RIGHT">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="130.0" text="Calcul" />
+                              <Button mnemonicParsing="false" onAction="#calcul" prefHeight="100.0" prefWidth="130.0" text="Calcul" />
                            </children>
                            <BorderPane.margin>
                               <Insets bottom="35.0" left="35.0" right="35.0" top="35.0" />
@@ -111,7 +112,14 @@
                   </BorderPane>
                </content>
           </Tab>
-          <Tab text="Untitled Tab 2" />
+          <Tab text="Résultat">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <VBox fx:id="resultView" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+               </content></Tab>
         </tabs>
       </TabPane>
    </center>

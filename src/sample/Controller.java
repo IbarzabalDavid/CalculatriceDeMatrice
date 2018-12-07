@@ -14,7 +14,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class Controller {
-
+    @FXML
+    public VBox resultView;
+    @FXML
     public HBox ligneOp;
     @FXML
     public ChoiceBox<String> matrice1;
@@ -23,7 +25,13 @@ public class Controller {
     @FXML
     public GridPane placeMat;
 
+
     public static ArrayList<Matrice> tabMat=new ArrayList<>();
+    public static ChoiceBox<String> matrice2;
+    public static int answerScalair;
+    public static Matrice answerMat;
+
+
     @FXML
     public void nouvelleMatrice(){
         if (tabMat.size()==9){
@@ -243,20 +251,116 @@ public class Controller {
         matrice1.setItems(observableList);
         matrice1.setOnAction((event -> {
             ArrayList<String> liste1 = new ArrayList<>();
-            liste1.add("addition");
-            liste1.add("soustraction");
-            liste1.add("multiplication par scalaire");
-            liste1.add("puissance");
-            liste1.add("tranposition");
-            liste1.add("inversion");
-            liste1.add("produit matricielle");
-            liste1.add("produit vectorielle");
-            liste1.add("produit tensorielle");
-            liste1.add("produit d'Hadamard");
-            liste1.add("Déterminant");
+            liste1.add("01-addition");
+            liste1.add("02-soustraction");
+            liste1.add("03-produit vectorielle");
+            liste1.add("04-puissance");
+            liste1.add("05-produit tensorielle");
+            liste1.add("06-produit d'Hadamard");
+            liste1.add("07-produit matricielle");
+            liste1.add("08-multiplication par scalaire");
+            liste1.add("09-tranposition");
+            liste1.add("10-inversion");
+            liste1.add("11-Déterminant");
             ObservableList<String> observableList1 = FXCollections.observableList(liste1);
             operation1.setItems(observableList1);
         }));
+        operation1.setOnAction((event -> {
+            ligneOp.getChildren().remove(2,ligneOp.getChildren().size());
+            try {
+                if (Integer.parseInt(operation1.getValue().toString().substring(0,2))<8){
+                    matrice2.setItems(observableList);
+                    matrice2.setPrefWidth(50);
+                    VBox mat2=new VBox(new Label("Matrice"), matrice2);
+                    mat2.setAlignment(Pos.CENTER);
+                    ligneOp.getChildren().add(mat2);
+                }
+            }catch (Exception e){
+                //C'est juste pcq la choice box est vide, c'est pas grave
+            }
+
+        }));
+    }
+    @FXML
+    public void reset(){
+        matrice1.getSelectionModel().clearSelection();
+    }
+    @FXML
+    public void addOp(){
+
+    }
+    @FXML
+    public void calcul(){
+        /*int op=Integer.parseInt(operation1.getValue().toString().substring(0,2));
+        switch (op){
+            case 1:
+                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).addition(tabMat.get((int)matrice2.getValue().charAt(0)-65));
+                afficherResultat();
+                break;
+            case 2:
+                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).soustraction(tabMat.get((int)matrice2.getValue().charAt(0)-65));
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 10:
+                break;
+            case 11:
+                break;
+            default:
+        }*/
+
+    }
+    public void afficherResultat(){
+        /*resultView.getChildren().clear();
+        HBox matriceEtNom=new HBox();
+        Label name=new Label("R = ");
+        name.setScaleX(2.5);
+        name.setScaleY(2.5);
+        Polyline crochetOpen=new Polyline(5,0,0,0,0,35,5,35);
+        Polyline crochetClose=new Polyline(0,0,5,0,5,35,0,35);
+        crochetClose.setScaleY(1.4*answerMat.getTailleL());
+        crochetOpen.setScaleY(1.4*answerMat.getTailleL());
+        crochetClose.setScaleX(answerMat.getTailleL());
+        crochetOpen.setScaleX(answerMat.getTailleL());
+        VBox mat=new VBox();
+        for (int l=0;l<answerMat.getTailleL();l++){
+            HBox ligne= new HBox();
+            for (int k=0;k<answerMat.getTailleC();k++){
+                double d=answerMat.getElement().get((answerMat.getTailleC()*l)+k).getValeur();
+                Label chiffre=new Label();
+                if ((d % 1) == 0){
+                    chiffre.setText(Integer.toString((int)d));
+                }
+                else {
+                    chiffre.setText(Double.toString(d));
+                }
+                chiffre.setScaleX(2);
+                chiffre.setScaleY(2);
+                ligne.getChildren().add(chiffre);
+                ligne.setAlignment(Pos.CENTER);
+                ligne.setSpacing(40);
+            }
+            mat.getChildren().add(ligne);
+            mat.setAlignment(Pos.CENTER);
+            mat.setSpacing(40);
+        }
+        matriceEtNom.getChildren().addAll(name,crochetOpen,mat,crochetClose);
+        matriceEtNom.setSpacing(23);
+        matriceEtNom.setAlignment(Pos.CENTER);
+        resultView.getChildren().add(matriceEtNom);
+        resultView.setAlignment(Pos.CENTER);*/
     }
 
 }
