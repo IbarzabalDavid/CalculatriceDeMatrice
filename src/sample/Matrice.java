@@ -182,64 +182,94 @@ public class Matrice {
         }
     }
     public Matrice inversion(){
+        this.determinant();
        if (verif5(this)) {
            Matrice matriceRes = new Matrice();
-           int var = 0;
-           int valeur = 0;
-           ArrayList<Element> autre = new ArrayList<>();
-           for (int i = 0; i < this.getTailleL(); i++) {
-               for (int j = 0; j < this.getTailleC(); j++) {
-                   autre.add(this.getElement().get(j + var));
-               }
-               for (int j = 0; j < this.getTailleC(); j++) {
-                   if (j == valeur) {
-                       Element element = new Element();
-                       element.setValeur(1);
-                       autre.add(element);
-                   } else {
-                       Element element = new Element();
-                       element.setValeur(0);
-                       autre.add(element);
-                   }
-               }
-               valeur++;
-               var = var + this.getTailleC();
+           if (this.getTailleL()==1){
+
+               Element element = new Element();
+               element.setValeur(1/this.getElement().get(0).getValeur());
+               ArrayList<Element> oneElement = new ArrayList<>();
+               oneElement.add(element);
+               matriceRes.setElement(oneElement);
+               matriceRes.setTailleL(1);
+               matriceRes.setTailleC(1);
+               return matriceRes;
            }
-            int varUti=0;
-           int tour=0;
-           int valeurMult=this.getTailleC()*2;
-           //faire la diagonale de 1
-           for (int k=0;k<this.getTailleC();k++){
-               for (int j=0;j<this.getTailleL();j++){
-                   for (int i=0;i<this.getTailleC()*2;i++){
-                   autre.get(i).setValeur(autre.get(i).getValeur()/autre.get(0).getValeur());
-               }
-                   //egal a la ligne quon doit enelever les nombres
-                   for (int i=0;i<(this.getTailleC()*2)-tour;i++){
-                       autre.get(varUti+i).setValeur(autre.get(varUti+i).getValeur()*autre.get(valeurMult).getValeur());
+           else {
+               int var = 0;
+               int valeur = 0;
+               int tour=0;
+               int valUti=0;
+               int ok=2;
+               int valMult=this.getTailleC()*2;
+               ArrayList<Element> autre = new ArrayList<>();
+               for (int i = 0; i < this.getTailleL(); i++) {
+                   for (int j = 0; j < this.getTailleC(); j++) {
+                       autre.add(this.getElement().get(j + var));
                    }
-                   //mettre les nombres a 0
-                   for (int i=0;i<(this.getTailleC()*2)-tour;i++){
-                       autre.get(valeurMult+i).setValeur(autre.get(valeurMult+i).getValeur()-autre.get(varUti+i).getValeur());
+                   for (int j = 0; j < this.getTailleC(); j++) {
+                       if (j == valeur) {
+                           Element element = new Element();
+                           element.setValeur(1);
+                           autre.add(element);
+                       } else {
+                           Element element = new Element();
+                           element.setValeur(0);
+                           autre.add(element);
+                       }
                    }
-                   valeurMult=valeurMult+(this.getTailleC()*2)-(tour*this.getTailleC()*2);
+                   valeur++;
+                   var = var + this.getTailleC();
                }
-               tour++;
-               varUti=varUti+this.getTailleC()+1;
-               valeurMult=varUti+this.getTailleC()*2;
-           }
-           int chiffre=this.getTailleC();
-           ArrayList<Element> bonne = new ArrayList<>();
-           for (int i=0;i<autre.size()/2;i++){
                for (int j=0;j<this.getTailleC();j++){
-                   bonne.add(autre.get(chiffre+i));
+                   for (int k=0;k<this.getTailleL()-1;k++){
+                       for (int i=0;i<(this.getTailleC()*2)-tour;i++){
+                           autre.get(valUti).setValeur(autre.get(valUti+i).getValeur()/autre.get(valUti).getValeur());
+                           autre.get(valUti+i).setValeur(autre.get(valUti+i).getValeur()*autre.get(valMult).getValeur());
+                           autre.get(valMult+i).setValeur(autre.get(valMult+i).getValeur()-autre.get(valUti).getValeur());
+                       }
+                       tour++;
+                       valMult=valMult+this.getTailleC()*2;
+                   }
+                   ok=ok+2;
+                   valMult=valUti+(this.getTailleC()*ok)+1;
+                   valUti=valMult-(this.getTailleC()*2);
                }
-              chiffre=chiffre+this.getTailleC()*2;
+
+               tour=1;
+               valUti=(this.getTailleC()*2)+1;
+               valMult=1;
+               int tourRestant=this.getTailleL()-1;
+               for (int j=0;j<this.getTailleC()-tour;j++){
+                   for (int k=0;k<this.getTailleL()-tourRestant;k++){
+                       for (int i=0;i<(this.getTailleC()*2)-tour;i++){
+                           autre.get(valUti+i).setValeur(autre.get(valUti+i).getValeur()/autre.get(valUti).getValeur());
+                           autre.get(valUti+i).setValeur(autre.get(valMult).getValeur()*autre.get(valUti+i).getValeur());
+                           autre.get(valMult+i).setValeur(autre.get(valMult+i).getValeur()-autre.get(valUti+i).getValeur());
+                       }
+                       valMult=valMult+(this.getTailleC()*2);
+                   }
+                   tour++;
+                   tourRestant--;
+                   valUti= valUti+(this.getTailleC()*2)+1;
+                   valMult= valUti-(tour*this.getTailleC()*2);
+               }
+               ArrayList<Element> bonne = new ArrayList<>();
+               int chiffre=this.getTailleC();
+               for (int j=0;j<this.getTailleL();j++){
+                   for (int i=0;i<this.getTailleC();i++){
+                    bonne.add(autre.get(chiffre+i));
+                   }
+                   chiffre=chiffre+this.getTailleC();
+               }
+               matriceRes.setElement(bonne);
+               matriceRes.setTailleC(this.getTailleC());
+               matriceRes.setTailleL(this.getTailleL());
+               return matriceRes;
            }
-           matriceRes.setElement(bonne);
-           matriceRes.setTailleC(this.getTailleC());
-           matriceRes.setTailleL(this.getTailleL());
-           return matriceRes;
+
+
        }else {
            return null;
        }
@@ -369,7 +399,6 @@ public class Matrice {
         ArrayList<Element> elem = new ArrayList<>();
         int var=0;
         int var1=0;
-        int nombre=0;
         for (int n=0;n<this.getTailleL();n++){
             for (int k=0;k<matrice2.getTailleL();k++){
                 for (int i=0;i<this.getTailleC();i++){
@@ -380,12 +409,10 @@ public class Matrice {
                     }
                     var++;
                 }
-                var=nombre;
+                var=var-this.getTailleC();
                 var1=var1+matrice2.getTailleC();
             }
-            var1=0;
-            nombre=nombre+this.getTailleC();
-            var=nombre;
+            var=var+this.getTailleC();
         }
         matriceRes.setElement(elem);
         matriceRes.setTailleL(this.getTailleL()*matrice2.getTailleL());

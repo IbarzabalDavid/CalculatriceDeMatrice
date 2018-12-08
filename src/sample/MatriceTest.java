@@ -51,6 +51,7 @@ class MatriceTest {
         elementc.setValeur(67);
         elemC.add(elementc);
         c.setElement(elemC);
+        c.setDeterminant(67);
 
         d= new Matrice();
         d.setTailleC(2);
@@ -185,6 +186,10 @@ class MatriceTest {
     }
     @org.junit.jupiter.api.Test
     void inversion(){
+        matriceRep.getElement().get(0).setValeur((double)1/67);
+        Matrice temp2= c.inversion();
+        assertEquals(matriceRep.getElement().get(0).getValeur(),temp2.getElement().get(0).getValeur());
+
         double [] tabRep ={-0.5,0.5,0.5,1.75,-0.75,-1.25,-2,1,-2};
         for (int i=0;i<9;i++){
             matriceRep.getElement().get(i).setValeur(tabRep[i]);

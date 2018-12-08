@@ -33,6 +33,7 @@ public class Controller {
             alerte2.showAndWait();
         }
         else {
+            loadCSV();
             Matrice matrice=new Matrice();
             matrice.setNomMat((char)(tabMat.size()+65));
             //dialog0
@@ -261,7 +262,7 @@ public class Controller {
             String string;
             for (int i = 0; i < ligne.size(); i++) {
                 string = ligne.get(i);
-                String[] parts = string.split(";");
+                String[] parts = string.split(",");
                 for (String part : parts) {
                     Element element = new Element();
                     element.setValeur(Double.parseDouble(part));

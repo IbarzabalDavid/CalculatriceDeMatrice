@@ -29,4 +29,8 @@ class ControllerTest {
     @Test
     void afficherMat() {
     }
+
+    @Test
+    void loadCSV() {
+    }
 }
