@@ -27,10 +27,12 @@ public class Controller {
 
 
     public static ArrayList<Matrice> tabMat=new ArrayList<>();
-    public static ChoiceBox<String> matrice2;
+    public static ChoiceBox<String> matrice2=new ChoiceBox<>();
+    public static TextField scalaire2=new TextField();
     public static int answerScalair;
     public static Matrice answerMat;
-
+    public static List<String> listeOp = Arrays.asList("01-addition","02-soustraction","03-produit vectorielle","04-produit matricielle","05-produit tensorielle","06-produit d'Hadamard","07-puissance","08-multiplication par scalaire","09-tranposition","10-inversion","11-Déterminant");
+    public static  ObservableList<String> observableListOp = FXCollections.observableList(listeOp);
 
     @FXML
     public void nouvelleMatrice(){
@@ -45,8 +47,8 @@ public class Controller {
             Matrice matrice=new Matrice();
             matrice.setNomMat((char)(tabMat.size()+65));
             //dialog0
-            Spinner spinnerL= new Spinner(1,5,3);
-            Spinner spinnerC= new Spinner(1,5,3);
+            Spinner spinnerL= new Spinner(1,5,1);
+            Spinner spinnerC= new Spinner(1,5,1);
             Label labelL = new Label("Entrez le nombre de lignes de votre matrice     ");
             Label labelC = new Label("Entrez le nombre de colonnes de votre matrice");
             HBox hb = new HBox(labelL,spinnerL);
@@ -243,55 +245,53 @@ public class Controller {
         }
     }
     public void setChoiceMat1(){
-        ArrayList<String> liste = new ArrayList<>();
-        for (int i=0;i<tabMat.size();i++){
-            liste.add(Character.toString(tabMat.get(i).getNomMat()));
-        }
-        ObservableList<String> observableList = FXCollections.observableList(liste);
-        matrice1.setItems(observableList);
+        matrice1.setItems(setObservForMat());
         matrice1.setOnAction((event -> {
-            ArrayList<String> liste1 = new ArrayList<>();
-            liste1.add("01-addition");
-            liste1.add("02-soustraction");
-            liste1.add("03-produit vectorielle");
-            liste1.add("04-puissance");
-            liste1.add("05-produit tensorielle");
-            liste1.add("06-produit d'Hadamard");
-            liste1.add("07-produit matricielle");
-            liste1.add("08-multiplication par scalaire");
-            liste1.add("09-tranposition");
-            liste1.add("10-inversion");
-            liste1.add("11-Déterminant");
-            ObservableList<String> observableList1 = FXCollections.observableList(liste1);
-            operation1.setItems(observableList1);
+            ObservableList<String> observableList=FXCollections.observableList(new ArrayList<>());
+            operation1.setItems(observableList);
+            operation1.setItems(observableListOp);
         }));
         operation1.setOnAction((event -> {
             ligneOp.getChildren().remove(2,ligneOp.getChildren().size());
             try {
-                if (Integer.parseInt(operation1.getValue().toString().substring(0,2))<8){
-                    matrice2.setItems(observableList);
+                if (Integer.parseInt(operation1.getValue().toString().substring(0,2))<7){
+                    matrice2.setItems(setObservForMat());
                     matrice2.setPrefWidth(50);
                     VBox mat2=new VBox(new Label("Matrice"), matrice2);
                     mat2.setAlignment(Pos.CENTER);
                     ligneOp.getChildren().add(mat2);
                 }
+                else if (Integer.parseInt(operation1.getValue().toString().substring(0,2))==7 ||Integer.parseInt(operation1.getValue().toString().substring(0,2))==8){
+                    VBox scal2=new VBox(new Label("Scalaire"), scalaire2);
+                    scal2.setAlignment(Pos.CENTER);
+                    ligneOp.getChildren().add(scal2);
+                }
             }catch (Exception e){
                 //C'est juste pcq la choice box est vide, c'est pas grave
             }
 
+
         }));
+    }
+    public ObservableList setObservForMat(){
+        ArrayList<String> liste = new ArrayList<>();
+        for (int i=0;i<tabMat.size();i++){
+            liste.add(Character.toString(tabMat.get(i).getNomMat()));
+        }
+        ObservableList<String> observableList = FXCollections.observableList(liste);
+        return observableList;
     }
     @FXML
     public void reset(){
+        resultView.getChildren().clear();
         matrice1.getSelectionModel().clearSelection();
-    }
-    @FXML
-    public void addOp(){
-
+        ObservableList<String> observableList=FXCollections.observableList(new ArrayList<>());
+        operation1.setItems(observableList);
+        ligneOp.getChildren().remove(2,ligneOp.getChildren().size());
     }
     @FXML
     public void calcul(){
-        /*int op=Integer.parseInt(operation1.getValue().toString().substring(0,2));
+        int op=Integer.parseInt(operation1.getValue().toString().substring(0,2));
         switch (op){
             case 1:
                 answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).addition(tabMat.get((int)matrice2.getValue().charAt(0)-65));
@@ -299,31 +299,51 @@ public class Controller {
                 break;
             case 2:
                 answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).soustraction(tabMat.get((int)matrice2.getValue().charAt(0)-65));
+                afficherResultat();
                 break;
             case 3:
+                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).produitVect(tabMat.get((int)matrice2.getValue().charAt(0)-65));
+                afficherResultat();
                 break;
             case 4:
+                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).multiplication(tabMat.get((int)matrice2.getValue().charAt(0)-65));
+                afficherResultat();
                 break;
             case 5:
+                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).produitTensoriel(tabMat.get((int)matrice2.getValue().charAt(0)-65));
+                afficherResultat();
                 break;
             case 6:
+                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).produitHadamard(tabMat.get((int)matrice2.getValue().charAt(0)-65));
+                afficherResultat();
                 break;
             case 7:
+                int value=Integer.parseInt(scalaire2.getText());
+                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).puissance(value);
+                afficherResultat();
                 break;
             case 8:
+                int value2=Integer.parseInt(scalaire2.getText());
+                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).multiScalaire(value2);
+                afficherResultat();
                 break;
             case 9:
+                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).transposition();
+                afficherResultat();
                 break;
             case 10:
+                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).inversion();
+                afficherResultat();
                 break;
             case 11:
+
                 break;
             default:
-        }*/
+        }
 
     }
     public void afficherResultat(){
-        /*resultView.getChildren().clear();
+        resultView.getChildren().clear();
         HBox matriceEtNom=new HBox();
         Label name=new Label("R = ");
         name.setScaleX(2.5);
@@ -360,7 +380,8 @@ public class Controller {
         matriceEtNom.setSpacing(23);
         matriceEtNom.setAlignment(Pos.CENTER);
         resultView.getChildren().add(matriceEtNom);
-        resultView.setAlignment(Pos.CENTER);*/
+        resultView.setAlignment(Pos.CENTER);
+
     }
 
 }

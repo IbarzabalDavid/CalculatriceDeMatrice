@@ -92,7 +92,7 @@
                         <VBox prefHeight="200.0" prefWidth="125.0" spacing="10.0" BorderPane.alignment="CENTER">
                            <children>
                               <Button mnemonicParsing="false" onAction="#reset" prefHeight="75.0" prefWidth="125.0" text="Reset" />
-                              <Button mnemonicParsing="false" onAction="#addOp" prefHeight="75.0" prefWidth="125.0" text="Ajouter Opétation" />
+                              <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="125.0" text="Ajouter Opétation" />
                            </children>
                            <BorderPane.margin>
                               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
