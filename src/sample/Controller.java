@@ -9,8 +9,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polyline;
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Controller {
     @FXML
@@ -29,7 +33,6 @@ public class Controller {
             alerte2.showAndWait();
         }
         else {
-            printThis();
             Matrice matrice=new Matrice();
             matrice.setNomMat((char)(tabMat.size()+65));
             //dialog0
@@ -229,7 +232,6 @@ public class Controller {
         }
     }
     //https://stackoverflow.com/questions/34815660/javafx-image-getting-scaled-to-25-and-then-getting-printed
-    //Manque de changer la chose qu'on veut imprimer.
     public void printThis() {
         ImageView imageView = new ImageView(tabIni.getTabPane().snapshot(null,null));
         new Thread(() -> printImage(imageView)).start();
@@ -245,6 +247,33 @@ public class Controller {
             if (success) {
                 job.endJob();
             }
+        }
+    }
+    public void loadCSV() {
+        Matrice matriceRes= new Matrice();
+        ArrayList<Element> elem = new ArrayList<>();
+        try {
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Veuillez sélectionner un fichier");
+            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers CSV", "*.csv"));
+            File fichier = fc.showOpenDialog(Main.stage1);
+            List<String> ligne = Files.readAllLines(fichier.toPath());
+            String string;
+            for (int i = 0; i < ligne.size(); i++) {
+                string = ligne.get(i);
+                String[] parts = string.split(";");
+                for (String part : parts) {
+                    Element element = new Element();
+                    element.setValeur(Double.parseDouble(part));
+                    elem.add(element);
+                }
+                matriceRes.setTailleC(parts.length);
+            }
+            matriceRes.setElement(elem);
+            matriceRes.setTailleL(ligne.size());
+            tabMat.add(matriceRes);
+        } catch (Exception e) {
+            System.out.println("Marche pas");
         }
     }
 
