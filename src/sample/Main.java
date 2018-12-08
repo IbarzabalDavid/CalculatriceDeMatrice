@@ -8,10 +8,12 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-
+   private static Parent root;
+   public static Stage stage1;
     @Override
     public void start(Stage stage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        stage1=stage;
+        root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         stage.setTitle("Matrice");
         stage.setMaximized(true);
         stage.setResizable(false);
@@ -22,5 +24,8 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+    public static Parent returnRoot(){
+        return root;
     }
 }

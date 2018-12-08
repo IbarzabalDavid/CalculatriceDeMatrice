@@ -183,23 +183,98 @@ public class Matrice {
     }
     public Matrice inversion(){
         this.determinant();
-        if (verif5(this)){
-            int tour=1;
-            Matrice matriceRes= new Matrice();
-            matriceRes.transposition();
-            
-            for (int i=0;i<matriceRes.getElement().size();i++){
-                if (tour==1){
-                    tour++;
-                }else {
-                    matriceRes.getElement().get(i).setValeur(0-matriceRes.getElement().get(i).getValeur());
-                    tour--;
-                }
-            }
-            return matriceRes;
-        }else {
-            return null;
-        }
+       if (verif5(this)) {
+           Matrice matriceRes = new Matrice();
+           if (this.getTailleL()==1){
+
+               Element element = new Element();
+               element.setValeur(1/this.getElement().get(0).getValeur());
+               ArrayList<Element> oneElement = new ArrayList<>();
+               oneElement.add(element);
+               matriceRes.setElement(oneElement);
+               matriceRes.setTailleL(1);
+               matriceRes.setTailleC(1);
+               return matriceRes;
+           }
+           else {
+               int var = 0;
+               int valeur = 0;
+               int tour=0;
+               int valUti=0;
+               int ok=2;
+               int valMult=this.getTailleC()*2;
+               ArrayList<Element> autre = new ArrayList<>();
+               for (int i = 0; i < this.getTailleL(); i++) {
+                   for (int j = 0; j < this.getTailleC(); j++) {
+                       autre.add(this.getElement().get(j + var));
+                   }
+                   for (int j = 0; j < this.getTailleC(); j++) {
+                       if (j == valeur) {
+                           Element element = new Element();
+                           element.setValeur(1);
+                           autre.add(element);
+                       } else {
+                           Element element = new Element();
+                           element.setValeur(0);
+                           autre.add(element);
+                       }
+                   }
+                   valeur++;
+                   var = var + this.getTailleC();
+               }
+               for (int j=0;j<this.getTailleC();j++){
+                   for (int k=0;k<this.getTailleL()-1;k++){
+                       for (int i=0;i<(this.getTailleC()*2)-tour;i++){
+                           autre.get(valUti).setValeur(autre.get(valUti+i).getValeur()/autre.get(valUti).getValeur());
+                           autre.get(valUti+i).setValeur(autre.get(valUti+i).getValeur()*autre.get(valMult).getValeur());
+                           autre.get(valMult+i).setValeur(autre.get(valMult+i).getValeur()-autre.get(valUti).getValeur());
+                       }
+                       tour++;
+                       valMult=valMult+this.getTailleC()*2;
+                   }
+                   ok=ok+2;
+                   valMult=valUti+(this.getTailleC()*ok)+1;
+                   valUti=valMult-(this.getTailleC()*2);
+               }
+
+               tour=1;
+               valUti=(this.getTailleC()*2)+1;
+               valMult=1;
+               int tourRestant=this.getTailleL()-1;
+               for (int j=0;j<this.getTailleC()-tour;j++){
+                   for (int k=0;k<this.getTailleL()-tourRestant;k++){
+                       for (int i=0;i<(this.getTailleC()*2)-tour;i++){
+                           autre.get(valUti+i).setValeur(autre.get(valUti+i).getValeur()/autre.get(valUti).getValeur());
+                           autre.get(valUti+i).setValeur(autre.get(valMult).getValeur()*autre.get(valUti+i).getValeur());
+                           autre.get(valMult+i).setValeur(autre.get(valMult+i).getValeur()-autre.get(valUti+i).getValeur());
+                       }
+                       valMult=valMult+(this.getTailleC()*2);
+                   }
+                   tour++;
+                   tourRestant--;
+                   valUti= valUti+(this.getTailleC()*2)+1;
+                   valMult= valUti-(tour*this.getTailleC()*2);
+               }
+               ArrayList<Element> bonne = new ArrayList<>();
+               int chiffre=this.getTailleC();
+               for (int j=0;j<this.getTailleL();j++){
+                   for (int i=0;i<this.getTailleC();i++){
+                    bonne.add(autre.get(chiffre+i));
+                   }
+                   chiffre=chiffre+this.getTailleC();
+               }
+               matriceRes.setElement(bonne);
+               matriceRes.setTailleC(this.getTailleC());
+               matriceRes.setTailleL(this.getTailleL());
+               return matriceRes;
+           }
+
+
+       }else {
+           return null;
+       }
+
+
     }
     public Matrice transposition(){
         Matrice matriceRes = new Matrice();
