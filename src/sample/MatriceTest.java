@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MatriceTest {
-    Matrice a,b,c,d,e,f;
+    Matrice a,b,c,d,e,f,g;
     Matrice matriceRep = new Matrice();
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
@@ -51,6 +51,7 @@ class MatriceTest {
         elementc.setValeur(67);
         elemC.add(elementc);
         c.setElement(elemC);
+        c.setDeterminant(67);
 
         d= new Matrice();
         d.setTailleC(2);
@@ -87,6 +88,19 @@ class MatriceTest {
             elemF.add(elementf);
         }
         f.setElement(elemF);
+
+        g= new Matrice();
+        g.setTailleL(3);
+        g.setTailleC(3);
+        g.setDeterminant(-4);
+        ArrayList<Element> elemG = new ArrayList<>();
+        int [] valG = {1,2,1,4,0,-1,-1,2,2};
+        for (int i=0;i<9;i++){
+            Element elementg = new Element();
+            elementg.setValeur(valG[i]);
+            elemG.add(elementg);
+        }
+        g.setElement(elemG);
 
     }
 
@@ -172,6 +186,24 @@ class MatriceTest {
     }
     @org.junit.jupiter.api.Test
     void inversion(){
+        matriceRep.getElement().get(0).setValeur((double)1/67);
+        Matrice temp2= c.inversion();
+        assertEquals(matriceRep.getElement().get(0).getValeur(),temp2.getElement().get(0).getValeur());
+
+        double [] tabRep ={-0.5,0.5,0.5,1.75,-0.75,-1.25,-2,1,-2};
+        for (int i=0;i<9;i++){
+            matriceRep.getElement().get(i).setValeur(tabRep[i]);
+        }
+        Matrice temp= new Matrice();
+        temp.setTailleL(3);
+        temp.setTailleC(3);
+        temp = g.inversion();
+        for (int i=0;i<matriceRep.getElement().size();i++){
+            assertEquals(matriceRep.getElement().get(i).getValeur(),temp.getElement().get(i).getValeur());
+        }
+        Matrice temp1 = new Matrice();
+        temp1.setDeterminant(0);
+        assertNull(temp1.inversion());
     }
 
     @org.junit.jupiter.api.Test
