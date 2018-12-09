@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MatriceTest {
-    Matrice a,b,c,d,e,f,g;
+    Matrice a,b,c,d,e,f,g,h;
     Matrice matriceRep = new Matrice();
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
@@ -102,6 +102,17 @@ class MatriceTest {
         }
         g.setElement(elemG);
 
+        h=new Matrice();
+        h.setTailleL(5);
+        h.setTailleC(5);
+        ArrayList<Element> elemH = new ArrayList<>();
+        int [] valH = {3,4,6,5,8,7,3,2,3,5,6,7,3,5,2,3,6,3,7,9,5,2,1,1,7};
+        for (int i=0;i<25;i++){
+            Element elementh = new Element();
+            elementh.setValeur(valH[i]);
+            elemH.add(elementh);
+        }
+        h.setElement(elemH);
     }
 
     @org.junit.jupiter.api.Test
@@ -244,6 +255,10 @@ class MatriceTest {
         matriceRep.setDeterminant(-964);
         Matrice temp2= a.determinant();
         assertEquals(matriceRep.getDeterminant(),temp2.getDeterminant());
+
+        matriceRep.setDeterminant(2412);
+        Matrice temp3 = h.determinant();
+        assertEquals(matriceRep.getDeterminant(),temp3.getDeterminant());
     }
 
     @org.junit.jupiter.api.Test

@@ -7,6 +7,7 @@ import javafx.print.PageLayout;
 import javafx.print.PrinterJob;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -31,6 +32,8 @@ public class Controller {
     Tab tabIni;
     @FXML
     public GridPane placeMat;
+    @FXML
+    public BorderPane bp;
 
 
     public static ArrayList<Matrice> tabMat=new ArrayList<>();
@@ -51,7 +54,6 @@ public class Controller {
             alerte2.showAndWait();
         }
         else {
-            loadCSV();
             Matrice matrice=new Matrice();
             matrice.setNomMat((char)(tabMat.size()+65));
             //dialog0
@@ -189,7 +191,7 @@ public class Controller {
                     if (tabMat.get(i).getNomMat()==textField.getText().toUpperCase().charAt(0)){
                         alerte1.setHeaderText("Opération réussi, la matrice "+textField.getText().toUpperCase()+" a été supprimée.");
                         alerte1.showAndWait();
- //pt afficher la matrice qui a ete delete
+                        //pt afficher la matrice qui a ete delete
                         tabMat.remove(i);
                         setChoiceMat1();
                         renameMat();
@@ -392,14 +394,21 @@ public class Controller {
 
     }
     //https://stackoverflow.com/questions/34815660/javafx-image-getting-scaled-to-25-and-then-getting-printed
+    @FXML
     public void printThis() {
-        ImageView imageView = new ImageView(tabIni.getTabPane().snapshot(null,null));
+        ImageView imageView = new ImageView(resultView.snapshot(null,null));
+        imageView.setPreserveRatio(true);
         new Thread(() -> printImage(imageView)).start();
     }
 
     public void printImage(ImageView image) {
         PrinterJob job = PrinterJob.createPrinterJob();
         PageLayout pageLayout = job.getJobSettings().getPageLayout();
+        image.setFitHeight(pageLayout.getPrintableHeight());
+        image.setFitWidth(pageLayout.getPrintableWidth());
+        image.setScaleX(2);
+        image.setScaleY(2);
+
         //PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
         job.getJobSettings().setPageLayout(pageLayout);
         if (job != null && job.showPrintDialog(Main.returnRoot().getScene().getWindow())) {
@@ -432,6 +441,10 @@ public class Controller {
             matriceRes.setElement(elem);
             matriceRes.setTailleL(ligne.size());
             tabMat.add(matriceRes);
+            renameMat();
+            afficherMat();
+            setChoiceMat1();
+
         } catch (Exception e) {
             System.out.println("Marche pas");
         }
