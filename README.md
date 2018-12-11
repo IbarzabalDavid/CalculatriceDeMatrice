@@ -31,3 +31,6 @@ Le code possède des tests unitaires pour les fonctions critiques
 Comme tu peux le constater, le projet est remis sur github
 -on a utiliser plusieurs branches(les fonctionnalités de GIT)
 notre programme est QUASIMENT indestructible 
+
+
+notre ficher csv s'appelle test et est dans le package sample
