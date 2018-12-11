@@ -22,6 +22,8 @@ import java.util.List;
 
 public class Controller {
     @FXML
+    public BorderPane bPaneOp;
+    @FXML
     public VBox resultView;
     @FXML
     public HBox ligneOp;
@@ -272,6 +274,7 @@ public class Controller {
                     ligneOp.getChildren().add(mat2);
                 }
                 else if (Integer.parseInt(operation1.getValue().toString().substring(0,2))==7 ||Integer.parseInt(operation1.getValue().toString().substring(0,2))==8){
+                    scalaire2.clear();
                     VBox scal2=new VBox(new Label("Scalaire"), scalaire2);
                     scal2.setAlignment(Pos.CENTER);
                     ligneOp.getChildren().add(scal2);
@@ -301,55 +304,132 @@ public class Controller {
     }
     @FXML
     public void calcul(){
-        int op=Integer.parseInt(operation1.getValue().toString().substring(0,2));
-        switch (op){
-            case 1:
-                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).addition(tabMat.get((int)matrice2.getValue().charAt(0)-65));
-                afficherResultat();
-                break;
-            case 2:
-                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).soustraction(tabMat.get((int)matrice2.getValue().charAt(0)-65));
-                afficherResultat();
-                break;
-            case 3:
-                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).produitVect(tabMat.get((int)matrice2.getValue().charAt(0)-65));
-                afficherResultat();
-                break;
-            case 4:
-                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).multiplication(tabMat.get((int)matrice2.getValue().charAt(0)-65));
-                afficherResultat();
-                break;
-            case 5:
-                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).produitTensoriel(tabMat.get((int)matrice2.getValue().charAt(0)-65));
-                afficherResultat();
-                break;
-            case 6:
-                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).produitHadamard(tabMat.get((int)matrice2.getValue().charAt(0)-65));
-                afficherResultat();
-                break;
-            case 7:
-                int value=Integer.parseInt(scalaire2.getText());
-                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).puissance(value);
-                afficherResultat();
-                break;
-            case 8:
-                int value2=Integer.parseInt(scalaire2.getText());
-                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).multiScalaire(value2);
-                afficherResultat();
-                break;
-            case 9:
-                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).transposition();
-                afficherResultat();
-                break;
-            case 10:
-                answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).inversion();
-                afficherResultat();
-                break;
-            case 11:
+        try {
+            HBox hBox=new HBox(new Label("Le résultat est dans une autre page -->"));
+            hBox.setAlignment(Pos.CENTER);
+            bPaneOp.setBottom(hBox);
+            Alert alerte5 = new Alert(Alert.AlertType.INFORMATION);
+            alerte5.setTitle("Important");
+            alerte5.setHeaderText("ERREUR");
+            alerte5.setContentText("L'opération ne peut s'effectuer, vérifier les dimensions et propriétés");
+            int op=Integer.parseInt(operation1.getValue().toString().substring(0,2));
+            switch (op){
+                case 1:
+                    answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).addition(tabMat.get((int)matrice2.getValue().charAt(0)-65));
+                    if (answerMat==null){
+                        alerte5.showAndWait();
+                    }
+                    else
+                        afficherResultat();
+                    break;
+                case 2:
+                    answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).soustraction(tabMat.get((int)matrice2.getValue().charAt(0)-65));
+                    if (answerMat==null){
+                        alerte5.showAndWait();
+                    }
+                    else
+                        afficherResultat();
+                    break;
+                case 3:
+                    answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).produitVect(tabMat.get((int)matrice2.getValue().charAt(0)-65));
+                    if (answerMat==null){
+                        alerte5.showAndWait();
+                    }
+                    else
+                        afficherResultat();
+                    break;
+                case 4:
+                    answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).multiplication(tabMat.get((int)matrice2.getValue().charAt(0)-65));
+                    if (answerMat==null){
+                        alerte5.showAndWait();
+                    }
+                    else
+                        afficherResultat();
+                    break;
+                case 5:
+                    answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).produitTensoriel(tabMat.get((int)matrice2.getValue().charAt(0)-65));
+                    if (answerMat==null){
+                        alerte5.showAndWait();
+                    }
+                    else
+                        afficherResultat();
+                    break;
+                case 6:
+                    answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).produitHadamard(tabMat.get((int)matrice2.getValue().charAt(0)-65));
+                    if (answerMat==null){
+                        alerte5.showAndWait();
+                    }
+                    else
+                        afficherResultat();
+                    break;
+                case 7:
+                    int value=Integer.parseInt(scalaire2.getText());
+                    if (value<0){
+                        Alert alerte6 = new Alert(Alert.AlertType.INFORMATION);
+                        alerte6.setTitle("Important");
+                        alerte6.setHeaderText("ERREUR");
+                        alerte6.setContentText("Entrez un nombre plus grand ou égal à 0");
+                        alerte6.showAndWait();
+                    }
+                    else {
+                        answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).puissance(value);
+                    }
+                    if (answerMat==null){
+                        alerte5.showAndWait();
+                    }
+                    else
+                        afficherResultat();
+                    break;
+                case 8:
+                    int value2=Integer.parseInt(scalaire2.getText());
+                    answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).multiScalaire(value2);
+                    if (answerMat==null){
+                        alerte5.showAndWait();
+                    }
+                    else
+                        afficherResultat();
+                    break;
+                case 9:
+                    answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).transposition();
+                    if (answerMat==null){
+                        alerte5.showAndWait();
+                    }
+                    else
+                        afficherResultat();
+                    break;
+                case 10:
+                    answerMat=tabMat.get((int)matrice1.getValue().charAt(0)-65).inversion();
+                    if (answerMat==null){
+                        alerte5.showAndWait();
+                    }
+                    else
+                        afficherResultat();
+                    break;
+                case 11:
+                    if (tabMat.get((int)matrice1.getValue().charAt(0)-65).determinant()==null){
+                        alerte5.showAndWait();
+                    }
+                    else {
+                        Label answer=new Label("R = "+Double.toString(tabMat.get((int)matrice1.getValue().charAt(0)-65).determinant().getDeterminant()));
+                        answer.setScaleX(2.5);
+                        answer.setScaleY(2.5);
+                        resultView.getChildren().clear();
+                        resultView.getChildren().add(answer);
+                        resultView.setAlignment(Pos.CENTER);
+                    }
 
-                break;
-            default:
+                    break;
+                default:
+            }
+        }catch (Exception e){
+            Alert alerte7 = new Alert(Alert.AlertType.INFORMATION);
+            alerte7.setTitle("Important");
+            alerte7.setHeaderText("ERREUR");
+            alerte7.setContentText("Entrez des valeur avant de calculer!!!!");
+            alerte7.showAndWait();
         }
+
+
 
     }
     public void afficherResultat(){
@@ -448,6 +528,13 @@ public class Controller {
         } catch (Exception e) {
             System.out.println("Marche pas");
         }
+    }
+    public void addOp(){
+        Alert alerte8 = new Alert(Alert.AlertType.INFORMATION);
+        alerte8.setTitle("ERREUR ERREUR ERREUR ERREUR ERREUR");
+        alerte8.setHeaderText("ERREUR ERREUR ERREUR ERREUR ERREUR ERREUR");
+        alerte8.setContentText("Lol! on la pas fait");
+        alerte8.showAndWait();
     }
 
 }
