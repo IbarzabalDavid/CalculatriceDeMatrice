@@ -51,7 +51,6 @@ public class Controller {
             alerte2.showAndWait();
         }
         else {
-            loadCSV();
             Matrice matrice=new Matrice();
             matrice.setNomMat((char)(tabMat.size()+65));
             //dialog0
@@ -436,6 +435,5 @@ public class Controller {
             System.out.println("Marche pas");
         }
     }
-
 
 }
