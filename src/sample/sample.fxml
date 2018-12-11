@@ -115,9 +115,9 @@
           </Tab>
           <Tab text="Résultat">
                <content>
-                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                  <BorderPane fx:id="bp" prefHeight="200.0" prefWidth="200.0">
                      <center>
-                        <VBox fx:id="resultView" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+                        <VBox fx:id="resultView" fillWidth="false" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
                      </center>
                      <left>
                         <Button mnemonicParsing="false" onAction="#printThis" text="Imprimer" BorderPane.alignment="CENTER" />
