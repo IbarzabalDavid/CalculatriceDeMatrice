@@ -4,9 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -16,23 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-            <Menu mnemonicParsing="false" text="Formule pour matrice">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-              </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Format">
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#nouvelleMatrice" text="Créer une matrice" />
-              </items>
-            </Menu>
-        </menus>
-      </MenuBar>
-   </top>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -40,7 +21,7 @@
                <content>
                   <BorderPane fx:id="bPaneIni" prefHeight="200.0" prefWidth="200.0">
                      <left>
-                        <VBox prefHeight="500.0" prefWidth="200.0" spacing="100.0" translateY="200.0" BorderPane.alignment="CENTER">
+                        <VBox prefHeight="500.0" prefWidth="200.0" spacing="100.0" translateY="70.0" BorderPane.alignment="CENTER">
                            <children>
                               <Button fx:id="but" mnemonicParsing="false" onAction="#nouvelleMatrice" prefHeight="200.0" prefWidth="200.0" text="Créer une matrice" />
                               <Button fx:id="butSup" mnemonicParsing="false" onAction="#supprimerMatrice" prefHeight="200.0" prefWidth="200.0" text="Supprimer matrice" />
@@ -70,7 +51,7 @@
           </Tab>
           <Tab text="Opérations">
                <content>
-                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                  <BorderPane fx:id="bPaneOp" prefHeight="200.0" prefWidth="200.0">
                      <center>
                         <HBox fx:id="ligneOp" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
                            <children>
@@ -93,7 +74,7 @@
                         <VBox prefHeight="200.0" prefWidth="125.0" spacing="10.0" BorderPane.alignment="CENTER">
                            <children>
                               <Button mnemonicParsing="false" onAction="#reset" prefHeight="75.0" prefWidth="125.0" text="Reset" />
-                              <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="125.0" text="Ajouter Opétation" />
+                              <Button mnemonicParsing="false" onAction="#addOp" prefHeight="75.0" prefWidth="125.0" text="Ajouter Opétation" />
                            </children>
                            <BorderPane.margin>
                               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

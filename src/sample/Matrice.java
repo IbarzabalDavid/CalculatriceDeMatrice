@@ -144,10 +144,24 @@ public class Matrice {
                     var++;
                 }
             }
-            while (nombre!=tour){
-                if (nombre==0){
-                    tour=nombre-1;
-                }else {
+            if (nombre==0){
+                int chiffre=0;
+                for (int i=0;i<this.getTailleL();i++){
+                    for (int j=0;j<this.getTailleC();j++){
+                        if (i==j){
+                            elements.get(j+chiffre).setValeur(1);
+                        }else {
+                            elements.get(j+chiffre).setValeur(0);
+                        }
+                    }
+                    chiffre=chiffre+this.getTailleC();
+                }
+                matriceRes.setElement(elements);
+                matriceRes.setTailleL(this.getTailleL());
+                matriceRes.setTailleC(this.getTailleC());
+                return matriceRes;
+            }else {
+                while (nombre!=tour){
                     for(int i = 0; i < this.getTailleL(); i++) {
                         for (int j = 0; j < this.getTailleC(); j++) {
                             for (int k = 0; k < this.getTailleC(); k++) {
@@ -161,21 +175,22 @@ public class Matrice {
                             matTemp[i][j]=0;
                         }
                     }
+                    tour++;
+                }
+                for (int i=0;i<this.getTailleL();i++){
+                    for (int j=0;j<this.getTailleC();j++){
+                        Element element = new Element();
+                        element.setValeur(matRes[i][j]);
+                        elem.add(element);
+                    }
+                }
+                matriceRes.setElement(elem);
+                matriceRes.setTailleL(this.getTailleL());
+                matriceRes.setTailleC(this.getTailleC());
+                return matriceRes;
+            }
 
-                }
-                tour++;
-            }
-            for (int i=0;i<this.getTailleL();i++){
-                for (int j=0;j<this.getTailleC();j++){
-                    Element element = new Element();
-                    element.setValeur(matRes[i][j]);
-                    elem.add(element);
-                }
-            }
-            matriceRes.setElement(elem);
-            matriceRes.setTailleL(this.getTailleL());
-            matriceRes.setTailleC(this.getTailleC());
-            return matriceRes;
+
         }
         else {
             return null;
@@ -361,8 +376,10 @@ public class Matrice {
                     this.setDeterminant(temp);
                     break;
             }
+            return this;
+        }else {
+            return null;
         }
-        return this;
     }
     public Matrice produitVect( Matrice matrice2){
         if (verif4(this,matrice2)){
