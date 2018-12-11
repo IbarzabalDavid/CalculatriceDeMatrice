@@ -1,6 +1,6 @@
 # ProjetFinal
 Nicolas Pageau et David Ibarzabal
-Manque le déterminant à afficher dans le résultat.
+
 Notre programme marche avec des dimensions 3x3
 -avec dimension arbitraire
 -avec un nombre de matrice arbitraire
@@ -30,3 +30,4 @@ Le code possède des tests unitaires pour les fonctions critiques
 -ils sont efficaces et s'executent rapidement
 Comme tu peux le constater, le projet est remis sur github
 -on a utiliser plusieurs branches(les fonctionnalités de GIT)
+notre programme est QUASIMENT indestructible 
