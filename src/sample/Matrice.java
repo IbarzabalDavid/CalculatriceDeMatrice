@@ -397,7 +397,7 @@ public class Matrice {
         if (verif(this,matrice2)){
             Matrice matriceRes= new Matrice();
             ArrayList<Element> elem = new ArrayList<>();
-            for (int i=0;i<this.getNbElement();i++){
+            for (int i=0;i<this.getElement().size();i++){
                 Element element = new Element();
                 element.setValeur(this.getElement().get(i).getValeur()*matrice2.getElement().get(i).getValeur());
                 elem.add(element);
